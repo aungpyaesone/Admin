@@ -1,20 +1,28 @@
 <resources>
     <string name="app_name">Admin</string>
     
-    <string name="name">B_Name</string>
-    <string name="author">Author</string>
+    <string name="name">စာအုပ် အမည်</string>
+    <string name="author">စာရေးဆရာ</string>
     <string name="category">Category</string>
-    <string name="isbn">ISBN</string>
-    <string name="price">Price</string>
+    <string name="isbn">ပုံနှိပ် ရက်စွဲ</string>
+    <string name="price">ဈေးနှုန်း</string>
     <string name="stock">Stock</string>
-    <string name="publication_date">Publication Date</string>
-    <string name="publisher">Publisher</string>
-    <string name="image">Image</string>
-    <string name="description">Description</string>
+    <string name="publication_date">ထုတ်ဝေ ရက်စွဲ</string>
+    <string name="publisher">စာအုပ်တိုက်</string>
+    <string name="image">ဓာတ်ပုံ</string>
+    <string name="description">စာအုပ် အညွှန်း</string>
 
     <string name="title"> Add Book </string>
 
     <string name="home">Home</string>
     <string name="chat">Chats</string>
     <string name="setting">Settings</string>
+
+    <string name="save">သိမ်းမည်</string>
+    <string name="author_name">စာရေးဆရာ အမည်</string>
+    <string name="category_name">Categories အမည်</string>
+    <string name="genre_name">အမျိုးအစား</string>
+    <string name="author_label">စာ</string>
+    <string name="see">ကြည့်မယ်</string>
+
 </resources>

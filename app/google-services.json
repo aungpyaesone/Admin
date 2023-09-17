@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "824773171024",
+    "project_id": "aly-admin",
+    "storage_bucket": "aly-admin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:824773171024:android:7979f195bfe28e86443e55",
+        "android_client_info": {
+          "package_name": "com.alingyaung.admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "824773171024-ei7evql9dikot9ojnjitfbbog423u7f7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCutM_EDYgJ_tue3PaHhQQhNjYOnGosCI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "824773171024-ei7evql9dikot9ojnjitfbbog423u7f7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

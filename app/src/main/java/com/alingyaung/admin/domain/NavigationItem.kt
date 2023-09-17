@@ -2,17 +2,14 @@
 
 package com.alingyaung.admin.domain
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
-import androidx.compose.material.ListItem
-import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Business
+import androidx.compose.material.icons.filled.Category
+import androidx.compose.material.icons.filled.PersonAdd
+import androidx.compose.material.icons.filled.TypeSpecimen
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -21,12 +18,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
-import com.alingyaung.admin.R
+import kotlin.String
 
 data class NavigationItem(
+    val route : String,
     val title: String,
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,
@@ -34,11 +30,48 @@ data class NavigationItem(
     val badgeCount: Int? = null
 )
 
+data class NavAddScreen(
+    val route : String,
+    val title: String,
+    val selectedIcon: ImageVector,
+    val hasNews: Boolean,
+    val badgeCount: Int? = null
+){
+/*    object NavAddAuthor : NavAddScreen(
+        route = "AddAuthor",
+        title = "Add Author",
+        selectedIcon = Icons.Default.PersonAdd,
+        hasNews = false,
+        badgeCount = null
+    )
+
+    object AddCategory : NavAddScreen(
+        route = "AddCategory",
+        title = "Add Category",
+        selectedIcon = Icons.Default.Category,
+        hasNews = false,
+        badgeCount = null
+    )
+    object AddPublisher : NavAddScreen(
+        route = "AddPublisher",
+        title = "Add Publisher",
+        selectedIcon = Icons.Default.Business,
+        hasNews = false,
+        badgeCount = null
+    )
+    object AddBook: NavAddScreen(
+        route = "AddGenre",
+        title = "Add Genre",
+        selectedIcon = Icons.Default.TypeSpecimen,
+        hasNews = false,
+        badgeCount = null
+    )*/
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NavigationItemsList(
     navigationItems: List<NavigationItem>,
-    currentSelectedItem: String,
     onItemSelected: (String) -> Unit
 ) {
     var selectedItemIndex by rememberSaveable {
@@ -48,7 +81,10 @@ fun NavigationItemsList(
         navigationItems.forEachIndexed { index, navigationItem ->
             NavigationBarItem(
                 selected = selectedItemIndex == index,
-                onClick = { selectedItemIndex = index },
+                onClick = {
+                    onItemSelected(navigationItem.title)
+                    selectedItemIndex = index
+                },
                 icon = {
                     BadgedBox(badge = {
                         if (navigationItem.badgeCount != null) {
@@ -71,54 +107,6 @@ fun NavigationItemsList(
                     androidx.compose.material3.Text(text = navigationItem.title)
                 }
             )
-
-        }
+        }}
     }
 
-    /* LazyColumn {
-         items(navigationItems) { item ->
-             NavigationItemRow(
-                 item = item,
-                 isSelected = item.title == currentSelectedItem,
-                 onItemClick = { onItemSelected(item.title) }
-             )
-             Divider() // Optional divider between items
-         }
-     }*/
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun NavigationItemRow(
-    item: NavigationItem,
-    isSelected: Boolean,
-    onItemClick: () -> Unit
-) {
-    ListItem(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onItemClick() },
-        icon = {
-            Icon(
-                imageVector = if (isSelected) item.selectedIcon else item.unselectedIcon,
-                contentDescription = item.title
-            )
-        },
-        text = {
-            Text(text = item.title)
-        },
-        secondaryText = {
-            if (item.hasNews) {
-                BadgedBox(
-                    badge = {
-                        Badge(content = {
-                            Text(text = item.badgeCount.toString())
-                        })
-                    }
-                ) {
-                    Text(text = "Settings")
-                }
-            }
-        }
-    )
-}
