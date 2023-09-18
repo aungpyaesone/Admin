@@ -1,4 +1,4 @@
-package com.alingyaung.admin.viewmodel
+package com.alingyaung.admin.uis.viewmodel
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -12,7 +12,7 @@ import com.alingyaung.admin.domain.Item
 import com.alingyaung.admin.domain.Publisher
 import com.alingyaung.admin.presentation.event.CommonEvent
 import com.alingyaung.admin.presentation.state.AuthorState
-import com.alingyaung.admin.repository.MainRepository
+import com.alingyaung.admin.data.repository.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

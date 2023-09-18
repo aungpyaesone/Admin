@@ -1,4 +1,4 @@
-package com.alingyaung.admin.viewmodel
+package com.alingyaung.admin.uis.viewmodel
 
 import androidx.lifecycle.ViewModel
 

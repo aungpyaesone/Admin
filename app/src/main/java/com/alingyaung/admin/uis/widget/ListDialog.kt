@@ -1,6 +1,5 @@
-package com.alingyaung.admin.widget
+package com.alingyaung.admin.uis.widget
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable

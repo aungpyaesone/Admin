@@ -1,4 +1,4 @@
-package com.alingyaung.admin.screen
+package com.alingyaung.admin.uis.screen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,7 +26,7 @@ import com.alingyaung.admin.R
 import com.alingyaung.admin.presentation.event.InputFormEvent
 import com.alingyaung.admin.presentation.state.AuthorState
 import com.alingyaung.admin.presentation.state.InputFormState
-import com.alingyaung.admin.viewmodel.FormViewModel
+import com.alingyaung.admin.uis.viewmodel.FormViewModel
 
 @ExperimentalMaterial3Api
 @Composable

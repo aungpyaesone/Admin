@@ -1,4 +1,4 @@
-package com.alingyaung.admin.nav_graph
+package com.alingyaung.admin.uis.nav_graph
 
 import android.content.Context
 import android.os.Build
@@ -8,7 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.alingyaung.admin.screen.HomeScreen
+import com.alingyaung.admin.uis.screen.HomeScreen
 
 object Graph {
     const val ROOT = "root_graph"

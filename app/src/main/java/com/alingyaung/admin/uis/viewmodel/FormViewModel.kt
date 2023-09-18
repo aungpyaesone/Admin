@@ -1,4 +1,4 @@
-package com.alingyaung.admin.viewmodel
+package com.alingyaung.admin.uis.viewmodel
 
 import android.graphics.Bitmap
 import android.util.Log
@@ -15,8 +15,8 @@ import com.alingyaung.admin.domain.Publisher
 import com.alingyaung.admin.presentation.event.InputFormEvent
 import com.alingyaung.admin.presentation.state.AuthorState
 import com.alingyaung.admin.presentation.state.InputFormState
-import com.alingyaung.admin.extension.validate
-import com.alingyaung.admin.repository.MainRepository
+import com.alingyaung.admin.utils.extension.validate
+import com.alingyaung.admin.data.repository.MainRepository
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel

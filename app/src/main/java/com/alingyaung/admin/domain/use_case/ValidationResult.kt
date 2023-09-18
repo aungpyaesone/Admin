@@ -1,4 +1,4 @@
-package com.alingyaung.admin.use_case
+package com.alingyaung.admin.domain.use_case
 
 data class ValidationResult(
     val success : Boolean,

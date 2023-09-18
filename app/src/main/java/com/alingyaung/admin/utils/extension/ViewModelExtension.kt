@@ -1,11 +1,11 @@
-package com.alingyaung.admin.extension
+package com.alingyaung.admin.utils.extension
 
 import android.content.Context
 import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.alingyaung.admin.repository.MainRepository
-import com.alingyaung.admin.viewmodel.AuthorViewModel
+import com.alingyaung.admin.data.repository.MainRepository
+import com.alingyaung.admin.uis.viewmodel.AuthorViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.format

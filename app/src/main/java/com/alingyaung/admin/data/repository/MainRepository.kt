@@ -1,4 +1,4 @@
-package com.alingyaung.admin.repository
+package com.alingyaung.admin.data.repository
 
 import android.graphics.Bitmap
 import com.alingyaung.admin.data.remote.FireBaseApi

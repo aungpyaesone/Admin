@@ -1,4 +1,4 @@
-package com.alingyaung.admin.screen
+package com.alingyaung.admin.uis.screen
 
 import android.content.Context
 import android.os.Build
@@ -15,7 +15,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -24,7 +23,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.alingyaung.admin.di.AppModule
 import com.alingyaung.admin.domain.NavigationItem
-import com.alingyaung.admin.nav_graph.HomeNavGraph
+import com.alingyaung.admin.uis.nav_graph.HomeNavGraph
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)

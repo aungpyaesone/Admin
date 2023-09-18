@@ -1,4 +1,4 @@
-package com.alingyaung.admin.widget
+package com.alingyaung.admin.uis.widget
 
 import android.widget.Space
 import androidx.compose.foundation.Image

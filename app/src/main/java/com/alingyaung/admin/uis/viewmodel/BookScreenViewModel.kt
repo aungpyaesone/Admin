@@ -1,10 +1,10 @@
-package com.alingyaung.admin.viewmodel
+package com.alingyaung.admin.uis.viewmodel
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.alingyaung.admin.presentation.event.BookScreenEvent
 import com.alingyaung.admin.presentation.state.BookScreenState
-import com.alingyaung.admin.repository.MainRepository
+import com.alingyaung.admin.data.repository.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

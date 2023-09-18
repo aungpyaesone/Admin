@@ -1,4 +1,4 @@
-package com.alingyaung.admin.nav_graph
+package com.alingyaung.admin.uis.nav_graph
 
 import android.content.Context
 import android.os.Build
@@ -6,24 +6,18 @@ import androidx.annotation.RequiresApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.alingyaung.admin.screen.AuthorInputFormScreen
-import com.alingyaung.admin.screen.AuthorListScreen
-import com.alingyaung.admin.screen.AuthorScreen
-import com.alingyaung.admin.screen.BookListScreen
-import com.alingyaung.admin.screen.BookScreen
-import com.alingyaung.admin.screen.HomeScreen
-import com.alingyaung.admin.screen.InputFormScreen
-import com.alingyaung.admin.screen.SettingScreen
-import com.alingyaung.admin.viewmodel.AuthorViewModel
-import com.alingyaung.admin.viewmodel.BookScreenViewModel
-import com.alingyaung.admin.viewmodel.FormViewModel
+import com.alingyaung.admin.uis.screen.AuthorInputFormScreen
+import com.alingyaung.admin.uis.screen.BookListScreen
+import com.alingyaung.admin.uis.screen.InputFormScreen
+import com.alingyaung.admin.uis.viewmodel.AuthorViewModel
+import com.alingyaung.admin.uis.viewmodel.BookScreenViewModel
+import com.alingyaung.admin.uis.viewmodel.FormViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.O)

@@ -13,7 +13,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.alingyaung.admin.nav_graph.NavRootGraph
+import com.alingyaung.admin.uis.nav_graph.NavRootGraph
 import com.alingyaung.admin.ui.theme.AdminTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

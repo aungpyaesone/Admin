@@ -1,4 +1,4 @@
-package com.alingyaung.admin.widget
+package com.alingyaung.admin.uis.widget
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

@@ -1,13 +1,14 @@
-package com.alingyaung.admin.extension
+package com.alingyaung.admin.utils.extension
 
-import com.alingyaung.admin.use_case.ValidationResult
+import com.alingyaung.admin.domain.use_case.ValidationResult
 
 fun String.validate() = when{
     this.isBlank() ->{
         ValidationResult(
         success = false,
         errorMessage = "Required"
-    )}
+    )
+    }
     else ->{
         ValidationResult(
             success = true,
@@ -20,7 +21,8 @@ fun Double.validate() = when{
         ValidationResult(
             success = false,
             errorMessage = "Required"
-        )}
+        )
+    }
     else ->{
         ValidationResult(
             success = true,
@@ -33,7 +35,8 @@ fun Int.validate() = when{
         ValidationResult(
             success = false,
             errorMessage = "Required"
-        )}
+        )
+    }
     else ->{
         ValidationResult(
             success = true,
