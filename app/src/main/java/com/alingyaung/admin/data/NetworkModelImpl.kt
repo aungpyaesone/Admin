@@ -2,8 +2,8 @@ package com.alingyaung.admin.data
 
 import android.graphics.Bitmap
 import android.util.Log
+import com.alingyaung.admin.data.persistence.entity.Author
 import com.alingyaung.admin.data.remote.FireBaseApi
-import com.alingyaung.admin.domain.Author
 import com.alingyaung.admin.domain.Category
 import com.alingyaung.admin.domain.Genre
 import com.alingyaung.admin.domain.Item

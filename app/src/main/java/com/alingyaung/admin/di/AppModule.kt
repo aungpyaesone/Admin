@@ -12,11 +12,14 @@ import androidx.compose.material.icons.filled.TypeSpecimen
 import androidx.compose.material.icons.outlined.Book
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
+import androidx.room.Room
 import com.alingyaung.admin.data.NetworkModelImpl
+import com.alingyaung.admin.data.persistence.db.ALinDatabase
 import com.alingyaung.admin.data.remote.ALinApi
 import com.alingyaung.admin.data.remote.FireBaseApi
 import com.alingyaung.admin.domain.NavAddScreen
 import com.alingyaung.admin.domain.NavigationItem
+import com.alingyaung.admin.utils.AppConstants.DATABASE_NAME
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -111,5 +114,22 @@ object AppModule {
     fun provideFirebaseApi(): FireBaseApi{
         return NetworkModelImpl()
     }
+
+    @Singleton
+    @Provides
+    fun provideNoteDatabase(@ApplicationContext context: Context) = Room.databaseBuilder(context,ALinDatabase::class.java,DATABASE_NAME).build()
+
+    @Singleton
+    @Provides
+    fun provideAuthorDao(db:ALinDatabase) = db.authorDao()
+
+    @Singleton
+    @Provides
+    fun provideBookDao(db:ALinDatabase) = db.bookDao()
+
+    @Singleton
+    @Provides
+    fun provideCategoryDao(db:ALinDatabase) = db.categoryDao(   )
+
 
 }

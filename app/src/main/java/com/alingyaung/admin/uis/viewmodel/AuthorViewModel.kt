@@ -88,7 +88,7 @@ class AuthorViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoading .value = true
             repository.getAllAuthors().collect{
-                _state.value = _state.value.copy(authorList  = it)
+                _state.value = _state.value.copy(authorList  = it.data)
                 _isLoading.value = false
             }
         }

@@ -1,7 +1,7 @@
 package com.alingyaung.admin.data.remote
 
 import android.graphics.Bitmap
-import com.alingyaung.admin.domain.Author
+import com.alingyaung.admin.data.persistence.entity.Author
 import com.alingyaung.admin.domain.Category
 import com.alingyaung.admin.domain.Genre
 import com.alingyaung.admin.domain.Item

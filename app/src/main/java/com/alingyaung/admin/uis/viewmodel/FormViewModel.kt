@@ -6,8 +6,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
+import com.alingyaung.admin.data.persistence.entity.Author
 import com.alingyaung.admin.data.remote.FireBaseApi
-import com.alingyaung.admin.domain.Author
 import com.alingyaung.admin.domain.Category
 import com.alingyaung.admin.domain.Genre
 import com.alingyaung.admin.domain.Item
@@ -292,7 +292,7 @@ class FormViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoading .value = true
             repository.getAllAuthors().collect{
-                _state2.value.authorList = it
+                _state2.value.authorList = it.data
                 _isLoading.value = false
             }
         }
