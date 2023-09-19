@@ -66,7 +66,7 @@ fun AuthorInputFormScreen(
                 Row {
                     Button(
                         onClick = {
-                            onEvent(InputFormEvent.SubmitAuthor)
+                          //  onEvent(InputFormEvent.SubmitAuthor)
                         },
                         modifier = Modifier.padding(16.dp)
                     ) {
@@ -121,7 +121,7 @@ fun AuthorInputFormScreen(
                 Row {
                     Button(
                         onClick = {
-                            onEvent(InputFormEvent.SubmitCategory)
+                          //  onEvent(InputFormEvent.SubmitCategory)
                         },
                         modifier = Modifier.padding(16.dp)
                     ) {
@@ -149,7 +149,7 @@ fun AuthorInputFormScreen(
                 Row {
                     Button(
                         onClick = {
-                            onEvent(InputFormEvent.SubmitPublisher)
+                            //onEvent(InputFormEvent.SubmitPublisher)
                         },
                         modifier = Modifier.padding(16.dp)
                     ) {

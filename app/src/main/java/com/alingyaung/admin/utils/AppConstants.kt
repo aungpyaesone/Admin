@@ -7,6 +7,11 @@ object AppConstants {
 
 
      const val DATABASE_NAME = "alinyaung_database"
+
+     const val TYPE_AUTHOR = 0
+     const val TYPE_CATEGORY = 1
+     const val TYPE_PUBLISHER = 3
+     const val TYPE_GENRE = 4
 }
 
 

@@ -87,7 +87,7 @@ object AppModule {
             selectedIcon = Icons.Default.PersonAdd,
             hasNews = false,
             badgeCount = null,
-            background = MaterialTheme.colorScheme.primary
+            background = Color.Cyan
         ),
         NavAddScreen(
             route = "AddCategory",
@@ -95,7 +95,7 @@ object AppModule {
             selectedIcon = Icons.Default.Category,
             hasNews = false,
             badgeCount = null,
-            background = MaterialTheme.colorScheme.secondary
+            background = Color.Magenta
         ),
         NavAddScreen(
             route = "AddPublisher",
@@ -103,7 +103,7 @@ object AppModule {
             selectedIcon = Icons.Default.Business,
             hasNews = false,
             badgeCount = null,
-            background = MaterialTheme.colorScheme.tertiary
+            background = Color.Yellow
         ),
         NavAddScreen(
             route = "AddGenre",
@@ -111,7 +111,7 @@ object AppModule {
             selectedIcon = Icons.Default.TypeSpecimen,
             hasNews = false,
             badgeCount = null,
-            background = MaterialTheme.colorScheme.surface
+            background = Color.DarkGray
         )
     )
 

@@ -37,6 +37,7 @@ fun NavItemWithText(
     data: NavAddScreen,
     onClickItem: (NavAddScreen) -> Unit
 ){
+
         Card (modifier = Modifier
             .fillMaxSize()
             .padding(8.dp)
@@ -45,8 +46,7 @@ fun NavItemWithText(
             }
         ){
             Box(modifier = Modifier.fillMaxSize()
-                .padding(16.dp)
-                .background(color = data.background),
+                .padding(16.dp),
                 contentAlignment = Alignment.Center)
             {
                 Column(

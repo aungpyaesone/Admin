@@ -12,9 +12,11 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.alingyaung.admin.di.AppModule
 import com.alingyaung.admin.uis.screen.AuthorInputFormScreen
 import com.alingyaung.admin.uis.screen.BookListScreen
 import com.alingyaung.admin.uis.screen.InputFormScreen
+import com.alingyaung.admin.uis.screen.SettingScreen
 import com.alingyaung.admin.uis.viewmodel.AuthorViewModel
 import com.alingyaung.admin.uis.viewmodel.BookScreenViewModel
 import com.alingyaung.admin.uis.viewmodel.FormViewModel
@@ -55,12 +57,9 @@ fun HomeNavGraph(navHostController: NavHostController,context: Context) {
         }
 
         composable(route = "Setting") {
-            val mViewModel = hiltViewModel<BookScreenViewModel>()
-            BookListScreen(
-                navHostController = navHostController,
-                state = mViewModel.state.value,
-                onEvent = mViewModel::onEvent
-            )
+           SettingScreen(
+               navController = navHostController,
+               dataList = AppModule.navAddItems(),{})
         }
     }
 }

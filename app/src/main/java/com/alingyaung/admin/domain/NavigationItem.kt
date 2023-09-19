@@ -1,14 +1,7 @@
 @file:OptIn(ExperimentalMaterialApi::class)
-
 package com.alingyaung.admin.domain
 
-import android.graphics.Color
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Business
-import androidx.compose.material.icons.filled.Category
-import androidx.compose.material.icons.filled.PersonAdd
-import androidx.compose.material.icons.filled.TypeSpecimen
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -19,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import kotlin.String
 
@@ -37,7 +31,7 @@ data class NavAddScreen(
     val selectedIcon: ImageVector,
     val hasNews: Boolean,
     val badgeCount: Int? = null,
-    val background: androidx.compose.ui.graphics.Color
+    val background: Color
 ){
 /*    object NavAddAuthor : NavAddScreen(
         route = "AddAuthor",

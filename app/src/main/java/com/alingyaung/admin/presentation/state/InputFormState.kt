@@ -1,7 +1,8 @@
 package com.alingyaung.admin.presentation.state
 
-import com.alingyaung.admin.domain.Author
-import com.alingyaung.admin.domain.Category
+
+import com.alingyaung.admin.data.persistence.entity.Author
+import com.alingyaung.admin.data.persistence.entity.Category
 import com.alingyaung.admin.domain.Genre
 import com.alingyaung.admin.data.persistence.entity.Publisher
 

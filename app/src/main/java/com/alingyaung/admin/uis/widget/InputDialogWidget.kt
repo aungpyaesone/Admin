@@ -24,6 +24,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,8 +41,13 @@ import com.alingyaung.admin.domain.DomainItem
 fun InputDialogWidget(
     showDialog: Boolean,
     title: String,
+    type: Int,
     setShowDialog: (Boolean) -> Unit,
-){
+    submitValue: (String, Int) -> Unit
+) {
+    var text by remember {
+        mutableStateOf("")
+    }
     if (showDialog) {
         Dialog(
             onDismissRequest = { setShowDialog(false) },
@@ -54,21 +63,21 @@ fun InputDialogWidget(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth() // Set the width of the dialog
-                        .height(300.dp) // Set the height of the dialog
+                        .height(180.dp) // Set the height of the dialog
                         .background(color = Color.White)
                     // Set the background color of the dialog
                 ) {
-                    Column(modifier = Modifier.padding(start=8.dp, end = 8.dp)){
+                    Column(modifier = Modifier.padding(start = 8.dp, end = 8.dp)) {
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(8.dp),
+                                .padding(top = 8.dp, bottom = 10.dp),
                             contentAlignment = Alignment.CenterEnd
                         ) {
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.SpaceEvenly
+                                horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(
                                     text = title,
@@ -80,26 +89,45 @@ fun InputDialogWidget(
                                         .padding(8.dp)
                                         .clickable {
                                             setShowDialog(false)
-                                        }, imageVector = Icons.Default.Close, contentDescription = null
+                                        },
+                                    imageVector = Icons.Default.Close,
+                                    contentDescription = null
                                 )
                             }
                         }
 
-                        TextField(value = "", onValueChange = {
-
-                        })
+                        TextField(value = text, onValueChange = {
+                            text = it
+                        },
+                            isError = text.isEmpty()
+                            )
 
                         Spacer(modifier = Modifier.height(16.dp))
 
                         Box(
                             modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.CenterEnd){
+                            contentAlignment = Alignment.CenterEnd
+                        ) {
                             Row(
                                 modifier = Modifier
-                                .padding(8.dp)){
-                                Text(text = "Cancel")
+                                    .padding(8.dp)
+                            ) {
+                                Text(
+                                    text = "Cancel",
+                                    modifier = Modifier.clickable { setShowDialog(false) },
+                                    color = Color.Black
+                                )
                                 Spacer(modifier = Modifier.width(8.dp))
-                                Text(text = "Ok")
+                                Text(
+                                    text = "Ok",
+                                    modifier = Modifier.clickable {
+                                        if(text.isNotEmpty()){
+                                            setShowDialog(false)
+                                            submitValue(text, type)
+                                        }
+                                    },
+                                    color = Color.Black
+                                )
                             }
                         }
 
@@ -113,6 +141,11 @@ fun InputDialogWidget(
 
 @Preview(widthDp = 200, heightDp = 200)
 @Composable
-fun InputDialogPreview(){
-    InputDialogWidget(showDialog = true, title = "title",  setShowDialog ={} )
+fun InputDialogPreview() {
+    InputDialogWidget(
+        showDialog = true,
+        title = "title",
+        0,
+        setShowDialog = {},
+        submitValue = { a, b -> })
 }

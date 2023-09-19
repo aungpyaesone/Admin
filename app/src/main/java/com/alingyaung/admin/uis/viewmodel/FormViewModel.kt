@@ -74,16 +74,16 @@ class FormViewModel @Inject constructor(
                 uploadImage(bitmap = event.bitmap)
             }
             is InputFormEvent.SubmitAuthor->{
-                submitAuthor()
+                submitAuthor(event.authorName)
             }
             is InputFormEvent.GetAuthorEvent ->{
               //  getAuthorList()
             }
 
             is InputFormEvent.GenderChange -> _state.value = _state.value.copy(genre = event.gender)
-            is InputFormEvent.SubmitCategory -> submitCategory()
+            is InputFormEvent.SubmitCategory -> submitCategory(event.categoryName)
             is InputFormEvent.SubmitGenre -> submitGenre()
-            is InputFormEvent.SubmitPublisher -> submitPublisher()
+            is InputFormEvent.SubmitPublisher -> submitPublisher(event.publisherName)
             is InputFormEvent.AuthorVOChange -> {
                 _state.value = _state.value.copy(
                     authorVO = event.author
@@ -125,8 +125,8 @@ class FormViewModel @Inject constructor(
         }
     }
 
-    private fun submitPublisher() {
-        val genreResult = _state.value.publisher.validate()
+    private fun submitPublisher(publisherName:String) {
+        /*val genreResult = _state.value.publisher.validate()
         val hasError = listOf(genreResult).any{
             !it.success
         }
@@ -135,10 +135,10 @@ class FormViewModel @Inject constructor(
                 genreError = genreResult.errorMessage
             )
             return
-        }
+        }*/
         val publisherData = Publisher(
             id = UUID.randomUUID().toString(),
-            name = _state.value.publisher
+            name = publisherName
         )
         viewModelScope.launch {
             try {
@@ -154,8 +154,8 @@ class FormViewModel @Inject constructor(
         }
     }
 
-    private fun submitCategory() {
-        val categoryResult = _state.value.category.validate()
+    private fun submitCategory(categoryName:String) {
+        /*val categoryResult = _state.value.category.validate()
         val hasError = listOf(categoryResult).any{
             !it.success
         }
@@ -164,10 +164,10 @@ class FormViewModel @Inject constructor(
                 genreError = categoryResult.errorMessage
             )
             return
-        }
+        }*/
         val categoryData = Category(
             id = UUID.randomUUID().toString(),
-            name = _state.value.category
+            name = categoryName
         )
         viewModelScope.launch {
             try {
@@ -248,8 +248,8 @@ class FormViewModel @Inject constructor(
         }
     }
 
-    private fun submitAuthor(){
-        val nameResult = _state.value.name.validate()
+    private fun submitAuthor(authorName: String){
+        /*val nameResult = _state.value.name.validate()
         val hasError = listOf(nameResult).any{
             !it.success
         }
@@ -258,11 +258,11 @@ class FormViewModel @Inject constructor(
                 nameError = nameResult.errorMessage
             )
             return
-        }
+        }*/
 
         val authorData = Author(
             id = UUID.randomUUID().toString(),
-            name = _state.value.name,
+            name = authorName,
             bio = null,
             image = null
         )

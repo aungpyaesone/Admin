@@ -1,15 +1,15 @@
 package com.alingyaung.admin.presentation.event
 
 import android.graphics.Bitmap
-import com.alingyaung.admin.domain.Author
-import com.alingyaung.admin.domain.Category
+import com.alingyaung.admin.data.persistence.entity.Author
+import com.alingyaung.admin.data.persistence.entity.Category
 import com.alingyaung.admin.domain.Genre
 import com.alingyaung.admin.data.persistence.entity.Publisher
 
 sealed class InputFormEvent : BaseEvent{
     data class NameChange(val name:String) : InputFormEvent()
     data class AuthorChange(val name:String) : InputFormEvent()
-    data class AuthorVOChange(val author:Author) : InputFormEvent()
+    data class AuthorVOChange(val author: Author) : InputFormEvent()
     data class CategoryChange(val name:String) : InputFormEvent()
     data class CategoryVOChange(val category: Category) : InputFormEvent()
     data class  GenderChange(val gender:String) : InputFormEvent()
@@ -23,11 +23,11 @@ sealed class InputFormEvent : BaseEvent{
     data class PublisherChange(val name:String) : InputFormEvent()
     data class PublisherVOChange(val publisher: Publisher) : InputFormEvent()
      object Submit: InputFormEvent()
-    object SubmitAuthor : InputFormEvent()
+    data class SubmitAuthor(val authorName: String) : InputFormEvent()
     object SubmitGenre : InputFormEvent()
 
-    object SubmitPublisher: InputFormEvent()
-    object SubmitCategory : InputFormEvent()
+    data class SubmitPublisher(var publisherName:String) : InputFormEvent()
+    data class SubmitCategory(var categoryName:String) : InputFormEvent()
 
     object GetAuthorEvent : InputFormEvent()
 

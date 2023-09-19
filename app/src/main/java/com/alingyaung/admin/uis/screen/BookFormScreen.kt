@@ -42,8 +42,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.alingyaung.admin.R
-import com.alingyaung.admin.domain.Author
-import com.alingyaung.admin.domain.Category
+import com.alingyaung.admin.data.persistence.entity.Author
+import com.alingyaung.admin.data.persistence.entity.Category
 import com.alingyaung.admin.domain.Genre
 import com.alingyaung.admin.data.persistence.entity.Publisher
 import com.alingyaung.admin.presentation.event.CommonEvent
