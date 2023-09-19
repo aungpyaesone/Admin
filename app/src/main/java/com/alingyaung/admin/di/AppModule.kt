@@ -12,6 +12,8 @@ import androidx.compose.material.icons.filled.TypeSpecimen
 import androidx.compose.material.icons.outlined.Book
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.graphics.Color
 import androidx.room.Room
 import com.alingyaung.admin.data.NetworkModelImpl
 import com.alingyaung.admin.data.persistence.db.ALinDatabase
@@ -84,28 +86,32 @@ object AppModule {
             title = "Add Author",
             selectedIcon = Icons.Default.PersonAdd,
             hasNews = false,
-            badgeCount = null
+            badgeCount = null,
+            background = MaterialTheme.colorScheme.primary
         ),
         NavAddScreen(
             route = "AddCategory",
             title = "Add Category",
             selectedIcon = Icons.Default.Category,
             hasNews = false,
-            badgeCount = null
+            badgeCount = null,
+            background = MaterialTheme.colorScheme.secondary
         ),
         NavAddScreen(
             route = "AddPublisher",
             title = "Add Publisher",
             selectedIcon = Icons.Default.Business,
             hasNews = false,
-            badgeCount = null
+            badgeCount = null,
+            background = MaterialTheme.colorScheme.tertiary
         ),
         NavAddScreen(
             route = "AddGenre",
             title = "Add Genre",
             selectedIcon = Icons.Default.TypeSpecimen,
             hasNews = false,
-            badgeCount = null
+            badgeCount = null,
+            background = MaterialTheme.colorScheme.surface
         )
     )
 
@@ -129,7 +135,11 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideCategoryDao(db:ALinDatabase) = db.categoryDao(   )
+    fun provideCategoryDao(db:ALinDatabase) = db.categoryDao()
+
+    @Singleton
+    @Provides
+    fun providePublisherDao(db:ALinDatabase) = db.publisherDao()
 
 
 }

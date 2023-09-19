@@ -2,6 +2,7 @@
 
 package com.alingyaung.admin.domain
 
+import android.graphics.Color
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Business
@@ -35,7 +36,8 @@ data class NavAddScreen(
     val title: String,
     val selectedIcon: ImageVector,
     val hasNews: Boolean,
-    val badgeCount: Int? = null
+    val badgeCount: Int? = null,
+    val background: androidx.compose.ui.graphics.Color
 ){
 /*    object NavAddAuthor : NavAddScreen(
         route = "AddAuthor",

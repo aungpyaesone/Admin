@@ -2,10 +2,11 @@ package com.alingyaung.admin.data.remote
 
 import android.graphics.Bitmap
 import com.alingyaung.admin.data.persistence.entity.Author
-import com.alingyaung.admin.domain.Category
+import com.alingyaung.admin.data.persistence.entity.Book
+import com.alingyaung.admin.data.persistence.entity.Category
 import com.alingyaung.admin.domain.Genre
 import com.alingyaung.admin.domain.Item
-import com.alingyaung.admin.domain.Publisher
+import com.alingyaung.admin.data.persistence.entity.Publisher
 
 interface FireBaseApi {
     suspend fun addAuthor(author: Author?): String
@@ -18,7 +19,7 @@ interface FireBaseApi {
 
     suspend fun addBooks(book: Item?) :String
 
-    suspend fun getAllBooks() : List<Item>
+    suspend fun getAllBooks() : List<Book>
 
     suspend fun addGenre(genre: Genre?) :String
     suspend fun addCategory(category: Category?) :String

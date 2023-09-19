@@ -3,11 +3,12 @@ package com.alingyaung.admin.data
 import android.graphics.Bitmap
 import android.util.Log
 import com.alingyaung.admin.data.persistence.entity.Author
+import com.alingyaung.admin.data.persistence.entity.Book
+import com.alingyaung.admin.data.persistence.entity.Category
 import com.alingyaung.admin.data.remote.FireBaseApi
-import com.alingyaung.admin.domain.Category
 import com.alingyaung.admin.domain.Genre
 import com.alingyaung.admin.domain.Item
-import com.alingyaung.admin.domain.Publisher
+import com.alingyaung.admin.data.persistence.entity.Publisher
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -146,20 +147,20 @@ class NetworkModelImpl : FireBaseApi{
         }
     }
 
-    override suspend fun getAllBooks(): List<Item> {
+    override suspend fun getAllBooks(): List<Book> {
         return suspendCoroutine { continuation ->
             db.collection("books")
                 .addSnapshotListener{value,error ->
                     error?.let {
                         //  continuation.resumeWithException(it.localizedMessage)
                     } ?: run {
-                        val bookList : MutableList<Item> = arrayListOf()
+                        val bookList : MutableList<Book> = arrayListOf()
                         val result = value?.documents ?: arrayListOf()
                         for(document in result){
                             val data = document.data
                             data?.put("id",document.id)
                             val gson = Gson().toJson(data)
-                            val dataList = Gson().fromJson<Item>(gson,Item::class.java)
+                            val dataList = Gson().fromJson(gson,Book::class.java)
                             bookList.add(dataList)
                         }
                         continuation.resume(bookList)
@@ -265,7 +266,7 @@ class NetworkModelImpl : FireBaseApi{
                             val data = document.data
                             data?.put("id",document.id)
                             val gson = Gson().toJson(data)
-                            val dataList = Gson().fromJson(gson,Publisher::class.java)
+                            val dataList = Gson().fromJson(gson, Publisher::class.java)
                             publisherList.add(dataList)
                         }
                         continuation.resume(publisherList)

@@ -15,11 +15,16 @@ import androidx.room.PrimaryKey
         ForeignKey(entity = Category::class,
             parentColumns = ["id"],
             childColumns = ["category_id"],
+            onDelete = ForeignKey.CASCADE),
+        ForeignKey(entity = Publisher::class,
+            parentColumns = ["id"],
+            childColumns = ["publisher_id"],
             onDelete = ForeignKey.CASCADE)
     ],
     indices = [
         Index(value = ["author_id"]),
-        Index(value = ["category_id"])
+        Index(value = ["category_id"]),
+        Index(value = ["publisher_id"])
     ]
     )
 data class Book(
@@ -34,7 +39,7 @@ data class Book(
     var stock: Int? = null,
     var publication_date: String = "",
     var created_date: Long?,
-    var publisher: String = "",
+    var publisher_id: String = "",
     var description: String = "",
     var image: String = ""
 )

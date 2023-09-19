@@ -45,18 +45,20 @@ import com.alingyaung.admin.R
 import com.alingyaung.admin.domain.Author
 import com.alingyaung.admin.domain.Category
 import com.alingyaung.admin.domain.Genre
-import com.alingyaung.admin.domain.Publisher
+import com.alingyaung.admin.data.persistence.entity.Publisher
 import com.alingyaung.admin.presentation.event.CommonEvent
 import com.alingyaung.admin.presentation.event.InputFormEvent
 import com.alingyaung.admin.presentation.state.AuthorState
 import com.alingyaung.admin.presentation.state.InputFormState
 import com.alingyaung.admin.uis.widget.ListDialog
+import com.maxkeppeker.sheets.core.models.base.Header
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import gun0912.tedimagepicker.builder.TedImagePicker
 import gun0912.tedimagepicker.builder.type.MediaType
 import kotlinx.coroutines.flow.StateFlow
+import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
@@ -79,11 +81,19 @@ fun InputFormScreen(
     val calendarState = rememberUseCaseState()
     val calendarState2 = rememberUseCaseState()
 
+    val selectedDates = remember { mutableStateOf<List<LocalDate>>(listOf()) }
+    val disabledDates = listOf(
+        LocalDate.now().minusDays(7),
+        LocalDate.now().minusDays(12),
+        LocalDate.now().plusDays(3),
+    )
+
     CalendarDialog(
-        state = calendarState,
+        state = rememberUseCaseState {  },
         selection = CalendarSelection.Date{date ->
             onEvent(InputFormEvent.PublicDateChange(date.toString()))
-        })
+        },
+        )
 
     CalendarDialog(
         state = calendarState2,

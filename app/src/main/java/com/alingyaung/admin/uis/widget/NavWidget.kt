@@ -2,6 +2,7 @@ package com.alingyaung.admin.uis.widget
 
 import android.widget.Space
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,6 +19,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material.icons.filled.TypeSpecimen
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -42,7 +44,10 @@ fun NavItemWithText(
                 onClickItem(data)
             }
         ){
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center)
+            Box(modifier = Modifier.fillMaxSize()
+                .padding(16.dp)
+                .background(color = data.background),
+                contentAlignment = Alignment.Center)
             {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
@@ -67,7 +72,8 @@ fun NavItemPreview(){
             title = "Add Author",
             selectedIcon = Icons.Default.PersonAdd,
             hasNews = false,
-            badgeCount = null
+            badgeCount = null,
+            background = MaterialTheme.colorScheme.primary
         ),
         {}
     )

@@ -3,16 +3,16 @@ package com.alingyaung.admin.uis.viewmodel
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
-import com.alingyaung.admin.data.remote.FireBaseApi
+import com.alingyaung.admin.data.persistence.entity.Category
 import com.alingyaung.admin.domain.Author
-import com.alingyaung.admin.domain.Category
 import com.alingyaung.admin.domain.DomainItem
 import com.alingyaung.admin.domain.Genre
 import com.alingyaung.admin.domain.Item
-import com.alingyaung.admin.domain.Publisher
+import com.alingyaung.admin.data.persistence.entity.Publisher
 import com.alingyaung.admin.presentation.event.CommonEvent
 import com.alingyaung.admin.presentation.state.AuthorState
 import com.alingyaung.admin.data.repository.MainRepository
+import com.alingyaung.admin.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -103,7 +103,7 @@ class AuthorViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoading .value = true
             repository.getAllCategoryList().collect{
-                _state.value = _state.value.copy(categoryList  = it)
+                _state.value = _state.value.copy(categoryList  = it.data)
                 _isLoading.value = false
             }
         }
@@ -120,8 +120,8 @@ class AuthorViewModel @Inject constructor(
     private fun getPublisher(){
         viewModelScope.launch {
             _isLoading .value = true
-            repository.getAllPublisherList().collect{
-                _state.value = _state.value.copy(publisherList  = it)
+            repository.getAllPublisher().collect{
+                _state.value = _state.value.copy(publisherList  = it.data)
                 _isLoading.value = false
             }
         }

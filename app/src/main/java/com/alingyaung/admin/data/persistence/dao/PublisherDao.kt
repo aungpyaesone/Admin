@@ -6,17 +6,16 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.alingyaung.admin.data.persistence.entity.Author
 import com.alingyaung.admin.data.persistence.entity.Category
+import com.alingyaung.admin.data.persistence.entity.Publisher
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface CategoryDao {
-
-
+interface PublisherDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCategory(category: Category)
-    @Query("select * from category")
-    fun getAllCategory(): Flow<List<Category>>
+    suspend fun insertPublisher(publisher: Publisher)
+    @Query("select * from publisher")
+    fun getAllPublisher(): Flow<List<Publisher>>
 
-    @Query("select * from category where id = :id")
-    suspend fun getCategoryById(id:String) : Category
+    @Query("select * from publisher where id = :id")
+    suspend fun getPublisherById(id:String) : Publisher
 }

@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import com.alingyaung.admin.domain.Author
 import com.alingyaung.admin.domain.Category
 import com.alingyaung.admin.domain.Genre
-import com.alingyaung.admin.domain.Publisher
+import com.alingyaung.admin.data.persistence.entity.Publisher
 
 sealed class InputFormEvent : BaseEvent{
     data class NameChange(val name:String) : InputFormEvent()

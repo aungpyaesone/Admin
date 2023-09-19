@@ -7,11 +7,11 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.alingyaung.admin.data.persistence.entity.Author
-import com.alingyaung.admin.data.remote.FireBaseApi
-import com.alingyaung.admin.domain.Category
+import com.alingyaung.admin.data.persistence.entity.Book
+import com.alingyaung.admin.data.persistence.entity.Category
 import com.alingyaung.admin.domain.Genre
 import com.alingyaung.admin.domain.Item
-import com.alingyaung.admin.domain.Publisher
+import com.alingyaung.admin.data.persistence.entity.Publisher
 import com.alingyaung.admin.presentation.event.InputFormEvent
 import com.alingyaung.admin.presentation.state.AuthorState
 import com.alingyaung.admin.presentation.state.InputFormState
@@ -21,7 +21,6 @@ import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import java.util.UUID
@@ -224,7 +223,7 @@ class FormViewModel @Inject constructor(
         }
 
         Log.d("result2",Gson().toJson(_state.value))
-        val bookData = Item(
+        val bookData = Book(
             id = UUID.randomUUID().toString(),
             author_id = _state.value.authorVO.id,
             isbn = _state.value.isbn,
@@ -232,11 +231,12 @@ class FormViewModel @Inject constructor(
             price = _state.value.price,
             stock = _state.value.stock,
             publication_date = _state.value.publication_date,
-            publisher = _state.value.publisherVO.id,
+            publisher_id = _state.value.publisherVO.id,
             description = _state.value.description,
             image = _state.value.imageUrl,
             genre_id = _state.value.genreVO.id,
-            name = _state.value.name
+            name = _state.value.name,
+            created_date = System.currentTimeMillis()
         )
         Log.d("result",Gson().toJson(bookData))
         viewModelScope.launch {
@@ -298,15 +298,6 @@ class FormViewModel @Inject constructor(
         }
     }
 
-    private fun getCategoryList(){
-        viewModelScope.launch {
-            _isLoading .value = true
-            repository.getAllCategoryList().collect{
-                _state2.value.categoryList = it
-                _isLoading.value = false
-            }
-        }
-    }
 
     private fun uploadImage(bitmap: Bitmap?){
         viewModelScope.launch {
