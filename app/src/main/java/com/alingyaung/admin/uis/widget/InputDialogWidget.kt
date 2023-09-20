@@ -36,14 +36,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.alingyaung.admin.domain.DomainItem
+import com.alingyaung.admin.presentation.event.SettingEvent
+import com.alingyaung.admin.presentation.state.SettingScreenUiState
+import com.alingyaung.admin.utils.AppConstants
 
 @Composable
 fun InputDialogWidget(
     showDialog: Boolean,
     title: String,
     type: Int,
+    state: SettingScreenUiState,
     setShowDialog: (Boolean) -> Unit,
-    submitValue: (String, Int) -> Unit
+    onEvent:(SettingEvent) ->Unit
 ) {
     var text by remember {
         mutableStateOf("")
@@ -96,8 +100,8 @@ fun InputDialogWidget(
                             }
                         }
 
-                        TextField(value = text, onValueChange = {
-                            text = it
+                        TextField(value = state.name, onValueChange = {
+                            onEvent(SettingEvent.InputChangeEvent(it))
                         },
                             isError = text.isEmpty()
                             )
@@ -121,10 +125,19 @@ fun InputDialogWidget(
                                 Text(
                                     text = "Ok",
                                     modifier = Modifier.clickable {
-                                        if(text.isNotEmpty()){
-                                            setShowDialog(false)
-                                            submitValue(text, type)
+                                        when(type){
+                                            AppConstants.TYPE_AUTHOR -> {
+                                                onEvent(SettingEvent.SubmitAuthor)
+                                            }
+                                            AppConstants.TYPE_CATEGORY ->{
+                                                onEvent(SettingEvent.SubmitCategory)
+                                            }
+                                            AppConstants.TYPE_PUBLISHER ->{
+                                                onEvent(SettingEvent.SubmitPublisher)
+                                            }
+                                            else ->{}
                                         }
+                                        setShowDialog(false)
                                     },
                                     color = Color.Black
                                 )
@@ -146,6 +159,7 @@ fun InputDialogPreview() {
         showDialog = true,
         title = "title",
         0,
+        state = SettingScreenUiState(),
         setShowDialog = {},
-        submitValue = { a, b -> })
+        onEvent = {})
 }

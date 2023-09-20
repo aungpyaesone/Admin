@@ -9,10 +9,12 @@ import com.alingyaung.admin.data.remote.FireBaseApi
 import com.alingyaung.admin.domain.Genre
 import com.alingyaung.admin.domain.Item
 import com.alingyaung.admin.data.persistence.entity.Publisher
+import com.alingyaung.admin.utils.safeResume
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.Gson
+import kotlinx.coroutines.suspendCancellableCoroutine
 import java.io.ByteArrayOutputStream
 import java.util.UUID
 import kotlin.coroutines.resume
@@ -26,7 +28,7 @@ class NetworkModelImpl : FireBaseApi{
     override suspend fun addAuthor(
         author: Author?
     ): String {
-        return suspendCoroutine {continuation ->
+        return suspendCancellableCoroutine {continuation ->
             val authorMap = hashMapOf(
                 "id" to author?.id,
                 "name" to author?.name,
@@ -50,7 +52,7 @@ class NetworkModelImpl : FireBaseApi{
     }
 
     override suspend fun getAllAuthors(): List<Author> {
-        return suspendCoroutine { continuation ->
+        return suspendCancellableCoroutine { continuation ->
             db.collection("authors")
                 .addSnapshotListener{value,error ->
                     error?.let {
@@ -65,14 +67,16 @@ class NetworkModelImpl : FireBaseApi{
                             val dataList = Gson().fromJson<Author>(gson,Author::class.java)
                             authorList.add(dataList)
                         }
-                        continuation.resume(authorList)
+                        continuation.safeResume(authorList){
+                            Log.d("job","already done")
+                        }
                     }
                 }
         }
     }
 
     override suspend fun getAllCategory(): List<Category> {
-        return suspendCoroutine { continuation ->
+        return suspendCancellableCoroutine{ continuation ->
             db.collection("category")
                 .addSnapshotListener{value,error ->
                     error?.let {
@@ -94,7 +98,7 @@ class NetworkModelImpl : FireBaseApi{
     }
 
     override suspend fun uploadImage(image: Bitmap): String {
-        return suspendCoroutine { continuation ->
+        return suspendCancellableCoroutine { continuation ->
             val baos = ByteArrayOutputStream()
             image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
             val data = baos.toByteArray()
@@ -119,7 +123,7 @@ class NetworkModelImpl : FireBaseApi{
     }
 
     override suspend fun addBooks(book: Item?): kotlin.String {
-        return suspendCoroutine {continuation ->
+        return suspendCancellableCoroutine {continuation ->
             val bookMap = hashMapOf(
                 "id" to book?.id,
                 "name" to book?.name,
@@ -148,7 +152,7 @@ class NetworkModelImpl : FireBaseApi{
     }
 
     override suspend fun getAllBooks(): List<Book> {
-        return suspendCoroutine { continuation ->
+        return suspendCancellableCoroutine { continuation ->
             db.collection("books")
                 .addSnapshotListener{value,error ->
                     error?.let {
@@ -170,7 +174,7 @@ class NetworkModelImpl : FireBaseApi{
     }
 
     override suspend fun addGenre(genre: Genre?): kotlin.String {
-        return suspendCoroutine {continuation ->
+        return suspendCancellableCoroutine {continuation ->
             val bookMap = hashMapOf(
                 "id" to genre?.id,
                 "name" to genre?.name,
@@ -191,7 +195,7 @@ class NetworkModelImpl : FireBaseApi{
     }
 
     override suspend fun addCategory(category: Category?): String {
-        return suspendCoroutine { continuation ->
+        return suspendCancellableCoroutine { continuation ->
             val bookMap = hashMapOf(
                 "id" to category?.id,
                 "name" to category?.name,
@@ -254,7 +258,7 @@ class NetworkModelImpl : FireBaseApi{
     }
 
     override suspend fun getAllPublisher(): List<Publisher> {
-        return suspendCoroutine { continuation ->
+        return suspendCancellableCoroutine { continuation ->
             db.collection("publisher")
                 .addSnapshotListener{value,error ->
                     error?.let {

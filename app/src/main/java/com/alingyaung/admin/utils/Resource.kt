@@ -1,10 +1,13 @@
 package com.alingyaung.admin.utils
 
+import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.resume
 
 
 data class Resource<out T>(val status:Status, val data:T?,val message:String?){
@@ -66,4 +69,13 @@ inline fun<ResultType,RequestType> networkBoundResource(
 
     emitAll(resource)
 
+}
+
+inline fun <T> Continuation<T>.safeResume(value: T, onExceptionCalled: () -> Unit) {
+    if (this is CancellableContinuation) {
+        if (isActive)
+            resume(value)
+        else
+            onExceptionCalled()
+    } else throw Exception("Must use suspendCancellableCoroutine instead of suspendCoroutine")
 }

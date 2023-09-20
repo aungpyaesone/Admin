@@ -7,6 +7,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -20,6 +21,7 @@ import com.alingyaung.admin.uis.screen.SettingScreen
 import com.alingyaung.admin.uis.viewmodel.AuthorViewModel
 import com.alingyaung.admin.uis.viewmodel.BookScreenViewModel
 import com.alingyaung.admin.uis.viewmodel.FormViewModel
+import com.alingyaung.admin.uis.viewmodel.SettingViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -42,7 +44,7 @@ fun HomeNavGraph(navHostController: NavHostController,context: Context) {
         }
 
         composable(route = "Profile") {
-            val viewModel = hiltViewModel<FormViewModel>()
+            val viewModel = it.shareViewModel<FormViewModel>(navHostController)
             val authorViewModel = hiltViewModel<AuthorViewModel>()
             InputFormScreen(
                 navController = navHostController,
@@ -57,18 +59,23 @@ fun HomeNavGraph(navHostController: NavHostController,context: Context) {
         }
 
         composable(route = "Setting") {
+           val viewModel = hiltViewModel<SettingViewModel>()
            SettingScreen(
                navController = navHostController,
-               dataList = AppModule.navAddItems(),{})
+               dataList = AppModule.navAddItems(),
+               state = viewModel.state.value,
+               isLoading = viewModel.isLoading.value,
+               onEvent = viewModel::onEvent)
         }
     }
 }
 
 @Composable
-fun <T> NavBackStackEntry.shareViewModel(navController: NavController): T {
+inline infix fun <reified T :ViewModel> NavBackStackEntry.shareViewModel(navController: NavController): T {
     val navGraphRoute = destination.parent?.route ?: return hiltViewModel()
     val parentEntry = remember(this) {
         navController.getBackStackEntry(navGraphRoute)
     }
     return hiltViewModel(parentEntry)
 }
+
