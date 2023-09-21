@@ -54,10 +54,13 @@ import com.alingyaung.admin.uis.widget.ListDialog
 import com.maxkeppeker.sheets.core.models.base.Header
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
+import com.maxkeppeler.sheets.calendar.models.CalendarConfig
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
+import com.maxkeppeler.sheets.calendar.models.CalendarStyle
 import gun0912.tedimagepicker.builder.TedImagePicker
 import gun0912.tedimagepicker.builder.type.MediaType
 import kotlinx.coroutines.flow.StateFlow
+import org.intellij.lang.annotations.JdkConstants.CalendarMonth
 import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -89,7 +92,13 @@ fun InputFormScreen(
     )
 
     CalendarDialog(
-        state = rememberUseCaseState {  },
+        state = calendarState,
+        config = CalendarConfig(
+            yearSelection = true,
+            monthSelection = true,
+            style =CalendarStyle.MONTH,
+            disabledDates = disabledDates
+        ),
         selection = CalendarSelection.Date{date ->
             onEvent(InputFormEvent.PublicDateChange(date.toString()))
         },
