@@ -1,6 +1,7 @@
 package com.alingyaung.admin.utils.extension
 
 import com.alingyaung.admin.domain.use_case.ValidationResult
+import java.text.DecimalFormat
 
 fun String.validate() = when{
     this.isBlank() ->{
@@ -16,8 +17,8 @@ fun String.validate() = when{
     }
 }
 
-fun Double.validate() = when{
-    this.equals(0.0) ->{
+fun Double?.validate() = when{
+    this == 0.0 ->{
         ValidationResult(
             success = false,
             errorMessage = "Required"
@@ -30,7 +31,7 @@ fun Double.validate() = when{
     }
 }
 
-fun Int.validate() = when{
+fun Int?.validate() = when{
     this == 0 ->{
         ValidationResult(
             success = false,
@@ -43,3 +44,19 @@ fun Int.validate() = when{
         )
     }
 }
+
+fun Long?.validate() = when{
+    this == 0L ->{
+        ValidationResult(
+            success = false,
+            errorMessage = "Required"
+        )
+    }
+    else ->{
+        ValidationResult(
+            success = true,
+        )
+    }
+}
+
+fun Double?.format(): String = DecimalFormat("#,### ကျပ်").format(this)

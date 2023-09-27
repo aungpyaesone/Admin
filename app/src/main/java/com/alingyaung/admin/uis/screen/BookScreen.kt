@@ -8,8 +8,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun BookScreen(){
+fun BookDetailScreen(){
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
-        Text(text = "Book Screen")
+        Text(text = "Book Detail Screen")
     }
 }

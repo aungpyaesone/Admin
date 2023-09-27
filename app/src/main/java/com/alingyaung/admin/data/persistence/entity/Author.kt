@@ -8,9 +8,10 @@ import com.alingyaung.admin.domain.DomainItem
 data class Author(
     @PrimaryKey(autoGenerate = false)
     override val id: String = "",
-    override val name: String,
-    val bio: String?,
-    val image: String?
+    override val name: String = "",
+    val bio: String? = "",
+    val image: String? = "",
+    var isSync: Boolean = false
 ): DomainItem {
     override fun doMatchSearchQuery(query: String): Boolean {
         TODO("Not yet implemented")

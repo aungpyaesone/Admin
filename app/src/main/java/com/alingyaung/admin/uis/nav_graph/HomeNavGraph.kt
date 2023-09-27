@@ -2,6 +2,8 @@ package com.alingyaung.admin.uis.nav_graph
 
 import android.content.Context
 import android.os.Build
+import android.telecom.Call.Details
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
@@ -27,19 +29,24 @@ import com.alingyaung.admin.uis.viewmodel.SettingViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeNavGraph(navHostController: NavHostController,context: Context) {
+fun HomeNavGraph(navHostController: NavHostController,title:(String)->Unit) {
     NavHost(
         navController = navHostController,
         startDestination = "Home",
         route = Graph.HOME
     ) {
         composable(route = "Home") {
-            val viewModel = hiltViewModel<FormViewModel>()
-            AuthorInputFormScreen(
-                navController = navHostController,
-                viewModel.state.value,
+            val viewModel = hiltViewModel<BookScreenViewModel>()
+            BookListScreen(
+                navHostController = navHostController,
+                state = viewModel.state.value,
                 onEvent = viewModel::onEvent,
-                viewModel.isLoading.value
+                isLoading = viewModel.isLoading.value,
+                onItemClick = {
+                    navHostController.navigate(
+                        route = Graph.DETAILS
+                    )
+                }
             )
         }
 
@@ -50,14 +57,12 @@ fun HomeNavGraph(navHostController: NavHostController,context: Context) {
                 navController = navHostController,
                 viewModel.state.value,
                 authorViewModel.state.value,
-                context,
                 isLoading = viewModel.isLoading.value,
                 searchText = authorViewModel.searchText,
                 onEvent = viewModel::onEvent,
                 onCommonEvent = authorViewModel::onEvent
             )
         }
-
         composable(route = "Setting") {
            val viewModel = hiltViewModel<SettingViewModel>()
            SettingScreen(
@@ -67,7 +72,9 @@ fun HomeNavGraph(navHostController: NavHostController,context: Context) {
                isLoading = viewModel.isLoading.value,
                onEvent = viewModel::onEvent)
         }
+        navDetailGraph(navHostController,title = title)
     }
+
 }
 
 @Composable

@@ -117,8 +117,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideFirebaseApi(): FireBaseApi{
-        return NetworkModelImpl()
+    fun provideFirebaseApi(context: Context): FireBaseApi{
+        return NetworkModelImpl(context)
     }
 
     @Singleton

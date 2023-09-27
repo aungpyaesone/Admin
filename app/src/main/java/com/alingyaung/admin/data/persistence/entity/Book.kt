@@ -37,9 +37,11 @@ data class Book(
     var category_id: String = "",
     var price: Double?= null,
     var stock: Int? = null,
-    var publication_date: String = "",
+    var publication_date: Long?,
     var created_date: Long?,
     var publisher_id: String = "",
     var description: String = "",
-    var image: String = ""
+    var image: String = "",
+    var isSync : Boolean = false,
+    var isFavourite: Boolean = false
 )

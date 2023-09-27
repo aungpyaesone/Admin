@@ -52,8 +52,7 @@ class SettingViewModel @Inject constructor(
             try {
                 delay(500L)
                 _isLoading.value= true
-                repository.addAuthor(authorData).collect{
-                    Log.d("result",it)
+                repository.insertAuthor(authorData).collect{
                     _isLoading.value = false
                     _state.value = _state.value.copy(name = "")
                 }
@@ -72,17 +71,19 @@ class SettingViewModel @Inject constructor(
             id = UUID.randomUUID().toString(),
             name = _state.value.name
         )
-        viewModelScope.launch {
+        viewModelScope.launch{
             try {
                 delay(500L)
-                _isLoading.value = true
+                _isLoading.value= true
                 repository.addCategory(categoryData).collect{
                     _isLoading.value = false
                     _state.value = _state.value.copy(name = "")
                 }
-            }catch (e:Exception){
+            }
+            catch (e: Exception){
                 e.printStackTrace()
             }
+
         }
     }
 

@@ -19,4 +19,10 @@ interface CategoryDao {
 
     @Query("select * from category where id = :id")
     suspend fun getCategoryById(id:String) : Category
+
+    @Query("select * from category where isSync= :sync")
+    suspend fun getAllUnSyncCategory(sync:Boolean = false): List<Category>
+
+    @Query("delete from category")
+    suspend fun deleteAllCategory()
 }

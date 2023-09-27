@@ -1,5 +1,7 @@
 package com.alingyaung.admin.presentation.event
 
+import android.net.Uri
+
 sealed class CommonEvent : BaseEvent{
     object GetAuthorEvent : CommonEvent()
     object GetGenreEvent : CommonEvent()
@@ -7,4 +9,6 @@ sealed class CommonEvent : BaseEvent{
     object GetPublisherEvent : CommonEvent()
 
     data class SearchTextEvent(val text:String) : CommonEvent()
+
+
 }

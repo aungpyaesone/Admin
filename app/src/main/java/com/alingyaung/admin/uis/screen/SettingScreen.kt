@@ -46,23 +46,20 @@ fun SettingScreen(
     onEvent: (SettingEvent)->Unit
 ){
 
-    val _isLoading by remember { mutableStateOf(isLoading) }
     val navList= remember {
         mutableStateOf(AppModule.navAddItems())
     }
     var showDialog by remember {
         mutableStateOf(false)
     }
-
     var title by remember {
         mutableStateOf("")
     }
-
     var type by remember{
         mutableIntStateOf(0)
     }
     Surface{
-        if(_isLoading){
+        if(isLoading){
             CircularProgressIndicator()
         }
         else{
@@ -94,10 +91,7 @@ fun SettingScreen(
                 )
             }
         }
-
-
     }
-
 
     InputDialogWidget(
         showDialog = showDialog,
