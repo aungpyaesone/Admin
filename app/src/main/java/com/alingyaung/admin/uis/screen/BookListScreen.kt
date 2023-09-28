@@ -20,6 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import com.alingyaung.admin.data.persistence.entity.Book
 import com.alingyaung.admin.presentation.event.BookScreenEvent
 import com.alingyaung.admin.presentation.state.BookScreenState
+import com.alingyaung.admin.uis.widget.BookItemWidget
 
 @Composable
 fun BookListScreen(
@@ -58,8 +59,13 @@ fun BookListScreen(
             }
         } else {
             LazyColumn {
-                items(state.bookList) {
-                    Text(text = it.name)
+                items(state.bookList,key = {
+                    it.id
+                }) {
+                    BookItemWidget(
+                        book = it,
+                        onEvent = {}
+                    )
                 }
             }
         }
