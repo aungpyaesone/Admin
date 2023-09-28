@@ -15,6 +15,7 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.Color
 import androidx.room.Room
+import com.alingyaung.admin.R
 import com.alingyaung.admin.data.NetworkModelImpl
 import com.alingyaung.admin.data.persistence.db.ALinDatabase
 import com.alingyaung.admin.data.remote.ALinApi
@@ -56,14 +57,14 @@ object AppModule {
     fun navigationItems() = listOf(
         NavigationItem(
             route = "Home",
-            title = "Home",
+            title = R.string.books,
             selectedIcon = Icons.Filled.Home,
             unselectedIcon = Icons.Outlined.Home,
             hasNews = false,
         ),
         NavigationItem(
             route = "Profile",
-            title = "Profile",
+            title = R.string.book_form,
             selectedIcon = Icons.Filled.Person,
             unselectedIcon = Icons.Outlined.Person,
             hasNews = false,
@@ -71,7 +72,7 @@ object AppModule {
         ),
         NavigationItem(
             route = "Setting",
-            title = "Settings",
+            title =R.string.other,
             selectedIcon = Icons.Filled.Book,
             unselectedIcon = Icons.Outlined.Book,
             hasNews = true,
@@ -80,10 +81,10 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun navAddItems() = listOf(
+    fun navAddItems(context: Context) = listOf(
         NavAddScreen(
             route = "AddAuthor",
-            title = "Add Author",
+            title = R.string.add_author,
             selectedIcon = Icons.Default.PersonAdd,
             hasNews = false,
             badgeCount = null,
@@ -91,7 +92,7 @@ object AppModule {
         ),
         NavAddScreen(
             route = "AddCategory",
-            title = "Add Category",
+            title = R.string.add_category,
             selectedIcon = Icons.Default.Category,
             hasNews = false,
             badgeCount = null,
@@ -99,7 +100,7 @@ object AppModule {
         ),
         NavAddScreen(
             route = "AddPublisher",
-            title = "Add Publisher",
+            title = R.string.publisher,
             selectedIcon = Icons.Default.Business,
             hasNews = false,
             badgeCount = null,
@@ -107,7 +108,7 @@ object AppModule {
         ),
         NavAddScreen(
             route = "AddGenre",
-            title = "Add Genre",
+            title = R.string.add_genre,
             selectedIcon = Icons.Default.TypeSpecimen,
             hasNews = false,
             badgeCount = null,
@@ -117,8 +118,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideFirebaseApi(): FireBaseApi{
-        return NetworkModelImpl()
+    fun provideFirebaseApi(context: Context): FireBaseApi{
+        return NetworkModelImpl(context)
     }
 
     @Singleton

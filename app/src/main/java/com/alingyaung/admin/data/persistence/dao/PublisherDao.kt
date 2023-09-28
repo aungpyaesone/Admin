@@ -18,4 +18,10 @@ interface PublisherDao {
 
     @Query("select * from publisher where id = :id")
     suspend fun getPublisherById(id:String) : Publisher
+
+    @Query("select * from publisher where isSync= :sync")
+    suspend fun getAllUnSyncPublisher(sync:Boolean = false): List<Publisher>
+
+    @Query("delete from publisher")
+    suspend fun deleteAllPublisher()
 }

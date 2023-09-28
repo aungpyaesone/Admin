@@ -1,5 +1,6 @@
 package com.alingyaung.admin.uis.screen
 
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,10 +21,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.alingyaung.admin.R
 import com.alingyaung.admin.di.AppModule
 import com.alingyaung.admin.domain.NavAddScreen
 import com.alingyaung.admin.presentation.event.CommonEvent
@@ -36,6 +40,7 @@ import com.alingyaung.admin.utils.AppConstants.TYPE_AUTHOR
 import com.alingyaung.admin.utils.AppConstants.TYPE_CATEGORY
 import com.alingyaung.admin.utils.AppConstants.TYPE_GENRE
 import com.alingyaung.admin.utils.AppConstants.TYPE_PUBLISHER
+import dagger.hilt.android.qualifiers.ApplicationContext
 
 @Composable
 fun SettingScreen(
@@ -46,23 +51,18 @@ fun SettingScreen(
     onEvent: (SettingEvent)->Unit
 ){
 
-    val _isLoading by remember { mutableStateOf(isLoading) }
-    val navList= remember {
-        mutableStateOf(AppModule.navAddItems())
-    }
+
     var showDialog by remember {
         mutableStateOf(false)
     }
-
     var title by remember {
-        mutableStateOf("")
+        mutableStateOf(0)
     }
-
     var type by remember{
         mutableIntStateOf(0)
     }
     Surface{
-        if(_isLoading){
+        if(isLoading){
             CircularProgressIndicator()
         }
         else{
@@ -83,9 +83,9 @@ fun SettingScreen(
                                     showDialog = true
                                     title = it.title
                                     type = when(title){
-                                        "Add Author" -> TYPE_AUTHOR
-                                        "Add Category" -> TYPE_CATEGORY
-                                        "Add Publisher" -> TYPE_PUBLISHER
+                                        R.string.add_author -> TYPE_AUTHOR
+                                        R.string.add_category -> TYPE_CATEGORY
+                                        R.string.add_publisher -> TYPE_PUBLISHER
                                         else -> TYPE_GENRE
                                     }
                                 })
@@ -94,10 +94,7 @@ fun SettingScreen(
                 )
             }
         }
-
-
     }
-
 
     InputDialogWidget(
         showDialog = showDialog,
@@ -116,5 +113,5 @@ fun SettingScreen(
 fun SettingScreenPreview(){
     SettingScreen(
         rememberNavController(),
-        AppModule.navAddItems(),state= SettingScreenUiState(),isLoading = false,{})
+        AppModule.navAddItems(context = LocalContext.current),state= SettingScreenUiState(),isLoading = false,{})
 }

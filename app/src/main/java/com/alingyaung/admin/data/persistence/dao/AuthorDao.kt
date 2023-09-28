@@ -1,6 +1,7 @@
 package com.alingyaung.admin.data.persistence.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -17,5 +18,11 @@ interface AuthorDao {
 
     @Query("select * from author where id = :id")
     suspend fun getAuthorById(id:String) : Author
+
+    @Query("select * from author where isSync= :sync")
+    suspend fun getAllUnSyncAuthor(sync:Boolean = false): List<Author>
+
+    @Query("delete from author")
+    suspend fun deleteAllAuthors()
 
 }

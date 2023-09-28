@@ -14,6 +14,7 @@
 
     <string name="title"> Add Book </string>
 
+
     <string name="home">Home</string>
     <string name="chat">Chats</string>
     <string name="setting">Settings</string>
@@ -24,5 +25,18 @@
     <string name="genre_name">အမျိုးအစား</string>
     <string name="author_label">စာ</string>
     <string name="see">ကြည့်မယ်</string>
+
+
+    <string name="add_author">စာရေးဆရာ ထည့်ပါ</string>
+    <string name="add_publisher">စာအုပ်တိုက် ထည့်ပါ</string>
+    <string name="add_category">အမျိုးအစား ထည့်ပါ</string>
+    <string name="add_genre">အမျိုးစားခွဲထည့်ပါ</string>
+
+    <string name="books">စာအုပ်များ</string>
+    <string name="book_form">စာအုပ်ထည့်ရန်</string>
+    <string name="other">အခြား</string>
+
+    <string name="introduction">Introduction</string>
+    <string name="content">This book teaches entrepreneurs how to navigate extreme uncertainties by testing scientific hypotheses with a minimal viable product (MVP). Instead of creating elaborate business plans, The Lean Startup offers a framework for startups to test, learn, and adjust their strategy through a cycle of continuous improvement.</string>
 
 </resources>

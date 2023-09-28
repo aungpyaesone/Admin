@@ -13,6 +13,7 @@ import com.alingyaung.admin.data.remote.FireBaseApi
 import com.alingyaung.admin.domain.Genre
 import com.alingyaung.admin.data.persistence.entity.Publisher
 import com.alingyaung.admin.utils.Resource
+import com.alingyaung.admin.utils.Status
 import com.alingyaung.admin.utils.checkForInternetConnection
 import com.alingyaung.admin.utils.networkBoundResource
 import kotlinx.coroutines.delay
@@ -28,25 +29,68 @@ class MainRepository @Inject constructor(
     private val publisherDao: PublisherDao,
     private val appContext: Context
 ) {
-    suspend fun addAuthor(author: Author): Flow<String> = flow {
-        val result = api.addAuthor(author)
-        emit(result)
-    }
+    private var currentAuthorList : List<Author>? = null
+    private var currentCategoryList : List<Category>? = null
+    private var currentPublisherList : List<Publisher>? = null
+    private var currentBookList : List<Book>? = null
 
+    suspend fun insertAuthor(author: Author):Flow<Status> = flow{
+        val response = api.insertAuthor(author)
+        when(response.status){
+            Status.SUCCESS -> {
+                authorDao.insertAuthor(author.apply {
+                    isSync = true
+                })
+            }
+            Status.ERROR ->{
+                authorDao.insertAuthor(author.apply {
+                    isSync = false
+                })
+            }
+            Status.LOADING ->{}
+        }
+        emit(response.status)
+    }
 
     suspend fun addGenre(genre: Genre): Flow<String> = flow {
         val result = api.addGenre(genre)
         emit(result)
     }
 
-    suspend fun addPublisher(publisher: Publisher): Flow<String> = flow {
+    suspend fun addPublisher(publisher: Publisher): Flow<Status> = flow {
         val result = api.addPublisher(publisher)
-        emit(result)
+        when(result.status){
+            Status.SUCCESS -> {
+                publisherDao.insertPublisher(publisher.apply {
+                    isSync = true
+                })
+            }
+            Status.ERROR ->{
+                publisherDao.insertPublisher(publisher.apply {
+                    isSync = false
+                })
+            }
+            Status.LOADING ->{}
+        }
+        emit(result.status)
     }
 
-    suspend fun addCategory(category: Category): Flow<String> = flow {
-        val result = api.addCategory(category)
-        emit(result)
+    suspend fun addCategory(category: Category): Flow<Status> = flow {
+        val result = api.insertCategory(category)
+        when(result.status){
+            Status.SUCCESS -> {
+                categoryDao.insertCategory(category.apply {
+                    isSync = true
+                })
+            }
+            Status.ERROR ->{
+                categoryDao.insertCategory(category.apply {
+                    isSync = false
+                })
+            }
+            Status.LOADING ->{}
+        }
+        emit(result.status)
     }
 
     suspend fun getAllBooks(): Flow<Resource<List<Book>>> {
@@ -56,10 +100,13 @@ class MainRepository @Inject constructor(
             },
             fetch = {
                 delay(2000)
-                api.getAllBooks()
+                syncAllBook()
+                currentBookList
             },
-            saveFetchResult = {
-                insertBooks(it)
+            saveFetchResult = {response ->
+                response?.let {
+                    insertBooks(it)
+                }
             },
             shouldFetch = {
                 checkForInternetConnection(appContext)
@@ -72,10 +119,13 @@ class MainRepository @Inject constructor(
             query = { authorDao.getAllAuthor() },
             fetch = {
                 delay(2000)
-                api.getAllAuthors()
+                syncAllAuthor()
+                currentAuthorList
             },
             saveFetchResult = { response ->
-                insertAuthors(response)
+                response?.let {
+                    insertAuthors(it.onEach { author-> author.isSync = true })
+                }
             },
             shouldFetch = {
                 checkForInternetConnection(context = appContext)
@@ -88,10 +138,13 @@ class MainRepository @Inject constructor(
             query = { categoryDao.getAllCategory() },
             fetch = {
                 delay(2000)
-                api.getAllCategory()
+                syncAllCategory()
+                currentCategoryList
             },
-            saveFetchResult = {
-                insertCategory(it)
+            saveFetchResult = {response ->
+                response?.let {
+                    insertCategory(it)
+                }
             },
             shouldFetch = {
                 checkForInternetConnection(context = appContext)
@@ -104,10 +157,13 @@ class MainRepository @Inject constructor(
             query = { publisherDao.getAllPublisher() },
             fetch = {
                 delay(2000)
-                api.getAllPublisher()
+                syncAllPublisher()
+                currentPublisherList
             },
-            saveFetchResult = {
-                insertPublisher(it)
+            saveFetchResult = { response ->
+                response?.let {
+                    insertPublisher(it)
+                }
             },
             shouldFetch = {
                 checkForInternetConnection(appContext)
@@ -120,9 +176,22 @@ class MainRepository @Inject constructor(
         emit(result)
     }
 
-    suspend fun addBook(book: Book): Flow<String> = flow {
-        //val result = api.addBooks(book)
-        // emit(result)
+    suspend fun addBook(book: Book): Flow<Status> = flow {
+        val result = api.addBooks(book)
+        when(result.status){
+            Status.SUCCESS -> {
+                bookDao.insertBook(book.apply {
+                    isSync = true
+                })
+            }
+            Status.ERROR ->{
+                bookDao.insertBook(book.apply {
+                    isSync = false
+                })
+            }
+            Status.LOADING ->{}
+        }
+         emit(result.status)
     }
 
     suspend fun uploadImage(bitMap: Bitmap): Flow<String> = flow {
@@ -151,5 +220,48 @@ class MainRepository @Inject constructor(
             bookDao.insertBook(it)
         }
     }
+
+    private suspend fun syncAllAuthor(){
+        val unSyncAuthors = authorDao.getAllUnSyncAuthor()
+        unSyncAuthors.forEach { author -> insertAuthor(author) }
+        currentAuthorList = api.getAllAuthors()
+        currentAuthorList?.let {authors ->
+            authorDao.deleteAllAuthors()
+            insertAuthors(authors.onEach { it.isSync = true })
+        }
+    }
+
+    private suspend fun syncAllCategory(){
+        val unSyncAllCategory = categoryDao.getAllUnSyncCategory()
+        unSyncAllCategory.forEach { addCategory(it) }
+        currentCategoryList = api.getAllCategory()
+        currentCategoryList?.let {categories ->
+            categoryDao.deleteAllCategory()
+            insertCategory(categories.onEach { it.isSync = true })
+        }
+    }
+
+    private suspend fun syncAllPublisher(){
+        val unSyncAllPublisher = publisherDao.getAllUnSyncPublisher()
+        unSyncAllPublisher.forEach { addPublisher(it) }
+        currentPublisherList = api.getAllPublisher()
+        currentPublisherList?.let { publishers ->
+            publisherDao.deleteAllPublisher()
+            insertPublisher(publishers.onEach { it.isSync = true })
+        }
+
+    }
+
+    private suspend fun syncAllBook(){
+        val unSyncAllBook = bookDao.getAllUnSyncBook()
+        unSyncAllBook.forEach { addBook(it) }
+        currentBookList = api.getAllBooks()
+        currentBookList?.let { books ->
+            bookDao.deleteAllBook()
+            insertBooks(books.onEach { it.isSync = true })
+        }
+    }
+
+
 
 }

@@ -8,7 +8,8 @@ import com.alingyaung.admin.domain.DomainItem
 data class Category(
     @PrimaryKey(autoGenerate = false)
      override var id: String = "",
-     override var name: String
+     override var name: String = "",
+    var isSync : Boolean = false
 ): DomainItem{
     override fun doMatchSearchQuery(query: String): Boolean {
         TODO("Not yet implemented")

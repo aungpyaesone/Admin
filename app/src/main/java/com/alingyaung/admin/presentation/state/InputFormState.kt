@@ -17,11 +17,11 @@ data class InputFormState(
     var isbnError: String?= null,
     var category: String = "",
     var categoryError: String? = null,
-    var price: Double = 0.0,
+    var price: Double? = null,
     var priceError: String? = null,
-    var stock: Int = 0,
+    var stock: String? = "",
     var stockError: String? = null,
-    var publication_date: String = "",
+    var publication_date: Long? = null,
     var publication_dateError: String? = null,
     var publisher: String = "",
     var publisherError: String?= null,
@@ -29,7 +29,7 @@ data class InputFormState(
     var languageError: String? = null,
     var description: String = "",
     var descriptionError: String? = null,
-    var authorList : MutableList<String> = mutableListOf(),
+    var authorList : MutableList<String>? = mutableListOf(),
     var authorVO: Author = Author("","","",""),
     var categoryVO: Category = Category("",""),
     var genreVO : Genre = Genre("",""),
@@ -37,6 +37,6 @@ data class InputFormState(
 
 ): BaseState{
     fun addAuthor(author: String) {
-        authorList.add(author)
+        authorList?.add(author)
     }
 }

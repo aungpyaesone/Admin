@@ -1,6 +1,8 @@
 package com.alingyaung.admin.uis.viewmodel
 
+import android.content.Context
 import android.graphics.Bitmap
+import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
@@ -10,13 +12,14 @@ import com.alingyaung.admin.data.persistence.entity.Author
 import com.alingyaung.admin.data.persistence.entity.Book
 import com.alingyaung.admin.data.persistence.entity.Category
 import com.alingyaung.admin.domain.Genre
-import com.alingyaung.admin.domain.Item
 import com.alingyaung.admin.data.persistence.entity.Publisher
 import com.alingyaung.admin.presentation.event.InputFormEvent
 import com.alingyaung.admin.presentation.state.AuthorState
 import com.alingyaung.admin.presentation.state.InputFormState
 import com.alingyaung.admin.utils.extension.validate
 import com.alingyaung.admin.data.repository.MainRepository
+import com.alingyaung.admin.utils.extension.compressImage
+import com.alingyaung.admin.utils.extension.getFileFromUri
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -67,9 +70,9 @@ class FormViewModel @Inject constructor(
             is InputFormEvent.ImageChange -> _state.value = _state.value.copy(imageUrl = event.name)
             is InputFormEvent.IsbnChange -> _state.value = _state.value.copy(isbn = event.name)
             is InputFormEvent.PriceChange -> _state.value = _state.value.copy(price = event.price)
-            is InputFormEvent.PublicDateChange -> _state.value = _state.value.copy(publication_date = event.name)
+            is InputFormEvent.PublicDateChange -> _state.value = _state.value.copy(publication_date = event.date)
             is InputFormEvent.PublisherChange -> _state.value = _state.value.copy(publisher = event.name)
-            is InputFormEvent.StockChange -> _state.value = _state.value.copy(stock = event.name)
+            is InputFormEvent.StockChange -> _state.value = _state.value.copy(stock = event.stock)
             is InputFormEvent.SendImageEvent -> {
                 uploadImage(bitmap = event.bitmap)
             }
@@ -81,7 +84,7 @@ class FormViewModel @Inject constructor(
             }
 
             is InputFormEvent.GenderChange -> _state.value = _state.value.copy(genre = event.gender)
-            is InputFormEvent.SubmitCategory -> submitCategory(event.categoryName)
+            is InputFormEvent.SubmitCategory -> {}
             is InputFormEvent.SubmitGenre -> submitGenre()
             is InputFormEvent.SubmitPublisher -> submitPublisher(event.publisherName)
             is InputFormEvent.AuthorVOChange -> {
@@ -92,7 +95,9 @@ class FormViewModel @Inject constructor(
             is InputFormEvent.GenreVOChange -> _state.value = _state.value.copy(genreVO = event.genre)
             is InputFormEvent.CategoryVOChange -> _state.value = _state.value.copy(categoryVO = event.category)
             is InputFormEvent.PublisherVOChange -> _state.value = _state.value.copy(publisherVO = event.publisher)
-            else ->{}
+            is InputFormEvent.CompressImageEvent -> {
+                resizeImage(event.uri,event.context)
+            }
         }
     }
 
@@ -125,6 +130,14 @@ class FormViewModel @Inject constructor(
         }
     }
 
+    private fun resizeImage(uri: Uri,context: Context){
+        viewModelScope.launch {
+            val file = getFileFromUri(context,uri)
+            val result = file?.let { compressImage(context, it) }
+            uploadImage(result)
+        }
+    }
+
     private fun submitPublisher(publisherName:String) {
         /*val genreResult = _state.value.publisher.validate()
         val hasError = listOf(genreResult).any{
@@ -154,41 +167,12 @@ class FormViewModel @Inject constructor(
         }
     }
 
-    private fun submitCategory(categoryName:String) {
-        /*val categoryResult = _state.value.category.validate()
-        val hasError = listOf(categoryResult).any{
-            !it.success
-        }
-        if(hasError){
-            _state.value = _state.value.copy(
-                genreError = categoryResult.errorMessage
-            )
-            return
-        }*/
-        val categoryData = Category(
-            id = UUID.randomUUID().toString(),
-            name = categoryName
-        )
-        viewModelScope.launch {
-            try {
-                delay(500L)
-                _isLoading.value = true
-                repository.addCategory(categoryData).collect{
-                    _isLoading.value = false
-                    _state.value = _state.value.copy(category = "")
-                }
-            }catch (e:Exception){
-
-            }
-        }
-    }
-
     private fun submitFormData() {
         val nameResult = _state.value.name.validate()
         val authorResult = _state.value.authorVO.name.validate()
         val categoryResult = _state.value.categoryVO.name.validate()
-        val priceResult = _state.value.price.validate()
-        val stockResult = _state.value.stock.validate()
+        val priceResult = _state.value.price?.validate()
+        val stockResult = _state.value.stock?.validate()
         val publishDateResult = _state.value.publication_date.validate()
         val imageResult = _state.value.imageUrl.validate()
         val publisherResult = _state.value.publisherVO.name.validate()
@@ -202,22 +186,23 @@ class FormViewModel @Inject constructor(
             categoryResult,
             priceResult,
             stockResult,
+            imageResult,
             publisherResult,
-            publishDateResult,
-            genreResult
+            publishDateResult
         ).any {
-            !it.success
+            it?.let {
+                !it.success
+            } ?: false
         }
         if (hasError) {
             _state.value = _state.value.copy(
                 nameError = nameResult.errorMessage,
                 authorError = authorResult.errorMessage,
                 categoryError = categoryResult.errorMessage,
-                priceError = priceResult.errorMessage,
-                stockError = stockResult.errorMessage,
+                priceError = priceResult?.errorMessage,
+                stockError = stockResult?.errorMessage,
                 publisherError = publisherResult.errorMessage,
                 publication_dateError = publishDateResult.errorMessage,
-                genreError = genreResult.errorMessage
             )
             return
         }
@@ -229,7 +214,7 @@ class FormViewModel @Inject constructor(
             isbn = _state.value.isbn,
             category_id = _state.value.categoryVO.id,
             price = _state.value.price,
-            stock = _state.value.stock,
+            stock = _state.value.stock?.toInt(),
             publication_date = _state.value.publication_date,
             publisher_id = _state.value.publisherVO.id,
             description = _state.value.description,
@@ -242,6 +227,7 @@ class FormViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoading.value= true
             repository.addBook(bookData).collect{
+                resetForm()
                 _isLoading.value = false
             }
            // validationEventChannel.send(ValidationEvent.Success)
@@ -269,16 +255,14 @@ class FormViewModel @Inject constructor(
         viewModelScope.launch{
             try {
                 delay(500L)
-       //         validationEventChannel.send(ValidationEvent.Loading)
                 _isLoading.value= true
-               repository.addAuthor(authorData).collect{
-                   Log.d("result",it)
-                   _isLoading.value = false
-                   _state.value = _state.value.copy(name = "")
-               }
+                repository.insertAuthor(authorData).collect{
+                    _isLoading.value = false
+                    _state.value = _state.value.copy(name = "")
+                }
             }
             catch (e: Exception){
-
+                e.printStackTrace()
             }
 
         }
@@ -311,7 +295,24 @@ class FormViewModel @Inject constructor(
         }
     }
 
+    private fun resetForm(){
+        _state.value = _state.value.copy(
+            name = "","","","","","","","",
+            "","",
+            null,"",
+            null,"",
+            null,
+            "",
+            "","",
+            "","",
+            "","", null,
+            Author(),
+            Category(), Genre(),
+            Publisher()
+            )
+    }
 }
+
 
 
 

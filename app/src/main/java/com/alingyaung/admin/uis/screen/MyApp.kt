@@ -52,7 +52,7 @@ fun MyApp() {
                     scrollBehavior = scrollBehavior
                 )
             }, bottomBar = {
-                NavigationItemsList(
+               /* NavigationItemsList(
                     navigationItems = navigationItems,
                     onItemSelected = {
                         val route = when(it){
@@ -66,7 +66,7 @@ fun MyApp() {
                             }
                         }
                     }
-                )
+                )*/
             }) { paddingValues ->
             NavHost(
                 modifier = Modifier.padding(paddingValues),

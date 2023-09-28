@@ -1,12 +1,15 @@
 package com.alingyaung.admin.uis.screen
 
-import android.content.Context
-import android.graphics.BitmapFactory
 import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -35,6 +38,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -51,17 +55,14 @@ import com.alingyaung.admin.presentation.event.InputFormEvent
 import com.alingyaung.admin.presentation.state.AuthorState
 import com.alingyaung.admin.presentation.state.InputFormState
 import com.alingyaung.admin.uis.widget.ListDialog
-import com.maxkeppeker.sheets.core.models.base.Header
+import com.alingyaung.admin.utils.extension.toEpochMilli
+import com.alingyaung.admin.utils.extension.toLocalDateAsString
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarConfig
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import com.maxkeppeler.sheets.calendar.models.CalendarStyle
-import gun0912.tedimagepicker.builder.TedImagePicker
-import gun0912.tedimagepicker.builder.type.MediaType
 import kotlinx.coroutines.flow.StateFlow
-import org.intellij.lang.annotations.JdkConstants.CalendarMonth
-import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
@@ -71,9 +72,8 @@ fun InputFormScreen(
     navController: NavHostController,
     state: InputFormState,
     state2: AuthorState,
-    localContext: Context,
     searchText: StateFlow<String>,
-    isLoading : Boolean,
+    isLoading: Boolean,
     onEvent: (InputFormEvent) -> Unit,
     onCommonEvent: (CommonEvent) -> Unit
 ) {
@@ -84,11 +84,10 @@ fun InputFormScreen(
     val calendarState = rememberUseCaseState()
     val calendarState2 = rememberUseCaseState()
 
-    val selectedDates = remember { mutableStateOf<List<LocalDate>>(listOf()) }
-    val disabledDates = listOf(
-        LocalDate.now().minusDays(7),
-        LocalDate.now().minusDays(12),
-        LocalDate.now().plusDays(3),
+    val context = LocalContext.current
+    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri -> uri?.let { InputFormEvent.CompressImageEvent(it,context) }?.let { onEvent(it) } }
     )
 
     CalendarDialog(
@@ -96,23 +95,31 @@ fun InputFormScreen(
         config = CalendarConfig(
             yearSelection = true,
             monthSelection = true,
-            style =CalendarStyle.MONTH,
-            disabledDates = disabledDates
+            style = CalendarStyle.MONTH
         ),
-        selection = CalendarSelection.Date{date ->
-            onEvent(InputFormEvent.PublicDateChange(date.toString()))
+        selection = CalendarSelection.Date { date ->
+            onEvent(InputFormEvent.PublicDateChange(date.toEpochMilli()))
         },
-        )
+    )
 
     CalendarDialog(
         state = calendarState2,
-        selection = CalendarSelection.Date{date ->
+        config = CalendarConfig(
+            yearSelection = true,
+            monthSelection = true,
+            style = CalendarStyle.MONTH
+        ),
+        selection = CalendarSelection.Date { date ->
             onEvent(InputFormEvent.IsbnChange(date.toString()))
         })
     Column {
-        if(isLoading){
-            CircularProgressIndicator()
-        }else{
+        if (isLoading) {
+            Box(modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ){
+                CircularProgressIndicator()
+            }
+        } else {
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -146,9 +153,9 @@ fun InputFormScreen(
 
                     OutlinedTextField(
                         value = state.authorVO.name,
-                        enabled = false,
+                        // enabled = false,
                         onValueChange = {
-                            onEvent(InputFormEvent.AuthorChange(it))
+                            //onEvent(InputFormEvent.AuthorChange(it))
                         }, isError = state.authorError != null,
                         placeholder = {
                             Text(text = "Author")
@@ -160,7 +167,10 @@ fun InputFormScreen(
                             IconButton(onClick = {
                                 showAuthorDialog = true
                             }) {
-                                Icon(imageVector = Icons.Default.Face, contentDescription = "select image")
+                                Icon(
+                                    imageVector = Icons.Default.Face,
+                                    contentDescription = "select image"
+                                )
                             }
 
                         }
@@ -170,17 +180,22 @@ fun InputFormScreen(
 
                     OutlinedTextField(
                         value = state.categoryVO.name,
-                        onValueChange = { onEvent(InputFormEvent.CategoryChange(it)) },
+                        onValueChange = {
+                            // onEvent(InputFormEvent.CategoryChange(it))
+                        },
                         isError = state.categoryError != null,
                         label = {
                             Text(stringResource(id = R.string.category))
                         },
-                        enabled = false,
+                        // enabled = false,
                         trailingIcon = {
                             IconButton(onClick = {
                                 showCategoryDialog = true
                             }) {
-                                Icon(imageVector = Icons.Default.Category, contentDescription = "select image")
+                                Icon(
+                                    imageVector = Icons.Default.Category,
+                                    contentDescription = "select image"
+                                )
                             }
 
                         }
@@ -191,9 +206,9 @@ fun InputFormScreen(
                     OutlinedTextField(
                         value = state.isbn,
                         onValueChange = {
-                            onEvent(InputFormEvent.IsbnChange(it))
+                            //onEvent(InputFormEvent.IsbnChange(it))
                         },
-                        enabled = false,
+                       // enabled = false,
                         label = {
                             Text(stringResource(id = R.string.isbn))
                         },
@@ -201,8 +216,12 @@ fun InputFormScreen(
                             IconButton(onClick = {
                                 calendarState2.show()
                             }) {
-                                Icon(imageVector = Icons.Default.CalendarMonth, contentDescription = "select image")
-                            }}
+                                Icon(
+                                    imageVector = Icons.Default.CalendarMonth,
+                                    contentDescription = "select image"
+                                )
+                            }
+                        }
                     )
                     Spacer(modifier = Modifier.height(8.dp))
 
@@ -216,13 +235,14 @@ fun InputFormScreen(
                         label = {
                             Text(stringResource(id = R.string.price))
                         },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    )
                     Spacer(modifier = Modifier.height(8.dp))
                     OutlinedTextField(
                         value = state.stock.toString(),
                         onValueChange = { newValue ->
                             val intValue = newValue.toIntOrNull() ?: 0
-                            onEvent(InputFormEvent.StockChange(intValue))
+                            onEvent(InputFormEvent.StockChange(newValue))
                         },
                         isError = state.stockError != null,
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -230,9 +250,12 @@ fun InputFormScreen(
                             Text(stringResource(id = R.string.stock))
                         })
                     Spacer(modifier = Modifier.height(8.dp))
+
                     OutlinedTextField(
-                        value = state.publication_date,
-                        onValueChange = { onEvent(InputFormEvent.PublicDateChange(it)) },
+                        value = state.publication_date.toLocalDateAsString("yyyy-MM-dd") ?: "",
+                        onValueChange = {
+                            //  onEvent(InputFormEvent.PublicDateChange(it))
+                        },
                         label = { Text(stringResource(id = R.string.publication_date)) },
                         // enabled = false,
                         isError = state.publication_dateError != null,
@@ -240,9 +263,11 @@ fun InputFormScreen(
                             IconButton(onClick = {
                                 calendarState.show()
                             }) {
-                                Icon(imageVector = Icons.Default.CalendarMonth, contentDescription = "select image")
+                                Icon(
+                                    imageVector = Icons.Default.CalendarMonth,
+                                    contentDescription = "select image"
+                                )
                             }
-
                         }
                     )
                     Spacer(modifier = Modifier.height(8.dp))
@@ -259,7 +284,7 @@ fun InputFormScreen(
                         value = state.imageUrl,
                         //   enabled = false,
                         onValueChange = {
-                            onEvent(InputFormEvent.ImageChange(it))
+                           // onEvent(InputFormEvent.ImageChange(it))
                         },
                         label = {
                             Text(stringResource(id = R.string.image))
@@ -269,20 +294,9 @@ fun InputFormScreen(
                                 CircularProgressIndicator()
                             } else {
                                 IconButton(onClick = {
-                                    TedImagePicker.with(localContext)
-                                        .mediaType(MediaType.IMAGE)
-                                        .start {
-                                            //viewModel.onEvent(InputFormEvent.SendImageEvent(it))
-                                            try {
-                                                val inputStream =
-                                                    localContext.contentResolver.openInputStream(it)
-                                                val bitmap = BitmapFactory.decodeStream(inputStream)
-                                                onEvent(InputFormEvent.SendImageEvent(bitmap))
-                                                inputStream?.close()
-                                            } catch (e: Exception) {
-                                                e.printStackTrace()
-                                            }
-                                        }
+                                    singlePhotoPickerLauncher.launch(
+                                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                                    )
                                 }) {
                                     Icon(
                                         imageVector = Icons.Default.Image,
@@ -290,7 +304,6 @@ fun InputFormScreen(
                                     )
                                 }
                             }
-
                         }
                     )
                     Spacer(modifier = Modifier.height(8.dp))
@@ -298,14 +311,16 @@ fun InputFormScreen(
                         value = state.publisherVO.name,
                         label = { Text(text = "Publisher") },
                         isError = state.publisherError != null,
-                        enabled = false,
-                        onValueChange = { onEvent(InputFormEvent.PublisherChange(it))
+                        onValueChange = { //onEvent(InputFormEvent.PublisherChange(it))
                         },
                         trailingIcon = {
                             IconButton(onClick = {
                                 showPublisherDialog = true
                             }) {
-                                Icon(imageVector = Icons.Default.Business, contentDescription = "select image")
+                                Icon(
+                                    imageVector = Icons.Default.Business,
+                                    contentDescription = "select image"
+                                )
                             }
 
                         }
@@ -314,14 +329,19 @@ fun InputFormScreen(
                     OutlinedTextField(
                         value = state.genreVO.name,
                         label = { Text(text = "Genre") },
-                        enabled = false,
-                        onValueChange = { onEvent(InputFormEvent.GenderChange(it)) },
+                        //enabled = false,
+                        onValueChange = {
+                            //onEvent(InputFormEvent.GenderChange(it))
+                        },
                         isError = state.genreError != null,
                         trailingIcon = {
                             IconButton(onClick = {
                                 showGenreDialog = true
                             }) {
-                                Icon(imageVector = Icons.Default.MergeType, contentDescription = "select image")
+                                Icon(
+                                    imageVector = Icons.Default.MergeType,
+                                    contentDescription = "select image"
+                                )
                             }
 
                         }
@@ -337,67 +357,66 @@ fun InputFormScreen(
         }
     }
 
-        ListDialog(
-            showDialog = showAuthorDialog,
-            title = "Select Author",
-            state =state2,
-            searchText=searchText,
-            event = CommonEvent.GetAuthorEvent,
-            setShowDialog = { showAuthorDialog = it },
-            onClickItem = { data ->
-                onEvent(InputFormEvent.AuthorVOChange(data as Author))
-            }) {
-            when(it){
-                is CommonEvent.GetAuthorEvent ->  onCommonEvent(it)
-            }
+    ListDialog(
+        showDialog = showAuthorDialog,
+        title = "Select Author",
+        state = state2,
+        searchText = searchText,
+        event = CommonEvent.GetAuthorEvent,
+        setShowDialog = { showAuthorDialog = it },
+        onClickItem = { data ->
+            onEvent(InputFormEvent.AuthorVOChange(data as Author))
+        }) {
+        when (it) {
+            is CommonEvent.GetAuthorEvent -> onCommonEvent(it)
         }
+    }
 
     ListDialog(
         showDialog = showCategoryDialog,
         title = "Select Category",
-        state =state2 ,
-        searchText=searchText,
+        state = state2,
+        searchText = searchText,
         event = CommonEvent.GetCategoryEvent,
         setShowDialog = { showCategoryDialog = it },
         onClickItem = { data ->
             onEvent(InputFormEvent.CategoryVOChange(data as Category))
         }) {
-        when(it){
-            is CommonEvent.GetCategoryEvent ->  onCommonEvent(it)
+        when (it) {
+            is CommonEvent.GetCategoryEvent -> onCommonEvent(it)
         }
     }
 
     ListDialog(
         showDialog = showPublisherDialog,
         title = "Select Publisher",
-        state =state2 ,
-        searchText=searchText,
-        event = CommonEvent.GetPublisherEvent ,
+        state = state2,
+        searchText = searchText,
+        event = CommonEvent.GetPublisherEvent,
         setShowDialog = { showPublisherDialog = it },
         onClickItem = { data ->
             onEvent(InputFormEvent.PublisherVOChange(data as Publisher))
         }) {
-        when(it){
-            is CommonEvent.GetPublisherEvent ->  onCommonEvent(it)
+        when (it) {
+            is CommonEvent.GetPublisherEvent -> onCommonEvent(it)
         }
     }
 
     ListDialog(
         showDialog = showGenreDialog,
         title = "Select Genre",
-        state =state2 ,
-        searchText=searchText,
-        event = CommonEvent.GetGenreEvent   ,
+        state = state2,
+        searchText = searchText,
+        event = CommonEvent.GetGenreEvent,
         setShowDialog = { showGenreDialog = it },
         onClickItem = { data ->
             onEvent(InputFormEvent.GenreVOChange(data as Genre))
         }) {
-        when(it){
-            is CommonEvent.GetGenreEvent ->  onCommonEvent(it)
+        when (it) {
+            is CommonEvent.GetGenreEvent -> onCommonEvent(it)
         }
     }
 }
-
 
 
 /*   var item by remember {

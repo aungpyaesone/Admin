@@ -1,6 +1,7 @@
 @file:OptIn(ExperimentalMaterialApi::class)
 package com.alingyaung.admin.domain
 
+import androidx.annotation.StringRes
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
@@ -14,11 +15,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import kotlin.String
 
 data class NavigationItem(
     val route : String,
-    val title: String,
+    @StringRes val title: Int,
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,
     val hasNews: Boolean,
@@ -27,7 +29,7 @@ data class NavigationItem(
 
 data class NavAddScreen(
     val route : String,
-    val title: String,
+    @StringRes val title: Int,
     val selectedIcon: ImageVector,
     val hasNews: Boolean,
     val badgeCount: Int? = null,
@@ -68,11 +70,12 @@ data class NavAddScreen(
 @Composable
 fun NavigationItemsList(
     navigationItems: List<NavigationItem>,
-    onItemSelected: (String) -> Unit
+    onItemSelected: (Int) -> Unit
 ) {
     var selectedItemIndex by rememberSaveable {
         mutableIntStateOf(0)
     }
+
     NavigationBar {
         navigationItems.forEachIndexed { index, navigationItem ->
             NavigationBarItem(
@@ -95,12 +98,12 @@ fun NavigationItemsList(
                             imageVector = if (index == selectedItemIndex) {
                                 navigationItem.selectedIcon
                             } else navigationItem.unselectedIcon,
-                            contentDescription = navigationItem.title
+                            contentDescription = ""
                         )
                     }
                 },
                 label = {
-                    androidx.compose.material3.Text(text = navigationItem.title)
+                    androidx.compose.material3.Text(text = stringResource(navigationItem.title))
                 }
             )
         }}

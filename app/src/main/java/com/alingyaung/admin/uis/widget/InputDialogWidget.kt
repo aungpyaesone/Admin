@@ -31,10 +31,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.alingyaung.admin.R
 import com.alingyaung.admin.domain.DomainItem
 import com.alingyaung.admin.presentation.event.SettingEvent
 import com.alingyaung.admin.presentation.state.SettingScreenUiState
@@ -43,7 +45,7 @@ import com.alingyaung.admin.utils.AppConstants
 @Composable
 fun InputDialogWidget(
     showDialog: Boolean,
-    title: String,
+    title: Int,
     type: Int,
     state: SettingScreenUiState,
     setShowDialog: (Boolean) -> Unit,
@@ -52,6 +54,8 @@ fun InputDialogWidget(
     var text by remember {
         mutableStateOf("")
     }
+
+    val mText = stringResource(title)
     if (showDialog) {
         Dialog(
             onDismissRequest = { setShowDialog(false) },
@@ -84,7 +88,7 @@ fun InputDialogWidget(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(
-                                    text = title,
+                                    text = mText,
                                     fontSize = MaterialTheme.typography.bodyMedium.fontSize,
                                     color = Color.Black
                                 )
@@ -157,7 +161,7 @@ fun InputDialogWidget(
 fun InputDialogPreview() {
     InputDialogWidget(
         showDialog = true,
-        title = "title",
+        title = R.string.title,
         0,
         state = SettingScreenUiState(),
         setShowDialog = {},
