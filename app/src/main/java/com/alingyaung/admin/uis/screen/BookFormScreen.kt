@@ -34,6 +34,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -83,6 +84,10 @@ fun InputFormScreen(
     var showGenreDialog by remember { mutableStateOf(false) }
     val calendarState = rememberUseCaseState()
     val calendarState2 = rememberUseCaseState()
+
+    var dialogTitle = rememberSaveable{
+        mutableStateOf(R.string.add_author)
+    }
 
     val context = LocalContext.current
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
@@ -166,6 +171,7 @@ fun InputFormScreen(
                         trailingIcon = {
                             IconButton(onClick = {
                                 showAuthorDialog = true
+                                dialogTitle.value = R.string.choose_author
                             }) {
                                 Icon(
                                     imageVector = Icons.Default.Face,
@@ -191,6 +197,7 @@ fun InputFormScreen(
                         trailingIcon = {
                             IconButton(onClick = {
                                 showCategoryDialog = true
+                                dialogTitle.value = R.string.choose_author
                             }) {
                                 Icon(
                                     imageVector = Icons.Default.Category,
@@ -359,7 +366,7 @@ fun InputFormScreen(
 
     ListDialog(
         showDialog = showAuthorDialog,
-        title = "Select Author",
+        title = stringResource(dialogTitle.value),
         state = state2,
         searchText = searchText,
         event = CommonEvent.GetAuthorEvent,

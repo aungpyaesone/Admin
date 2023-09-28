@@ -1,6 +1,7 @@
 package com.alingyaung.admin.uis.screen
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -51,12 +52,11 @@ fun SettingScreen(
     onEvent: (SettingEvent)->Unit
 ){
 
-
     var showDialog by remember {
         mutableStateOf(false)
     }
     var title by remember {
-        mutableStateOf(0)
+        mutableStateOf(R.string.add_author)
     }
     var type by remember{
         mutableIntStateOf(0)
@@ -82,10 +82,16 @@ fun SettingScreen(
                                 onClickItem = {screen ->
                                     showDialog = true
                                     title = it.title
-                                    type = when(title){
-                                        R.string.add_author -> TYPE_AUTHOR
-                                        R.string.add_category -> TYPE_CATEGORY
-                                        R.string.add_publisher -> TYPE_PUBLISHER
+                                    type = when(it.title){
+                                        R.string.add_author -> {
+                                            TYPE_AUTHOR
+                                        }
+                                        R.string.add_category -> {
+                                            TYPE_CATEGORY
+                                        }
+                                        R.string.add_publisher -> {
+                                            TYPE_PUBLISHER
+                                        }
                                         else -> TYPE_GENRE
                                     }
                                 })
@@ -95,10 +101,9 @@ fun SettingScreen(
             }
         }
     }
-
     InputDialogWidget(
         showDialog = showDialog,
-        title =  title,
+        title = stringResource(title),
         type = type,
         state =state,
         setShowDialog ={

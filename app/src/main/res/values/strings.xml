@@ -32,6 +32,11 @@
     <string name="add_category">အမျိုးအစား ထည့်ပါ</string>
     <string name="add_genre">အမျိုးစားခွဲထည့်ပါ</string>
 
+    <string name="choose_author">စာရေးဆရာရွေးချယ်ပါ</string>
+    <string name="choose_category">အမျိုးအစားရွေးချယ်ပါ</string>
+    <string name="choose_isbn_date">ပုံနှိပ်ရက်စွဲ ရွေးချယ်ပါ</string>
+    <string name="choose_publish_date">ထုတ်ဝေရက်စွဲ ရွေးချယ်ပါ</string>
+
     <string name="books">စာအုပ်များ</string>
     <string name="book_form">စာအုပ်ထည့်ရန်</string>
     <string name="other">အခြား</string>

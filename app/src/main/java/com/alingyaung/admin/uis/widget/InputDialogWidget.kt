@@ -1,5 +1,6 @@
 package com.alingyaung.admin.uis.widget
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -45,7 +46,7 @@ import com.alingyaung.admin.utils.AppConstants
 @Composable
 fun InputDialogWidget(
     showDialog: Boolean,
-    title: Int,
+    title: String,
     type: Int,
     state: SettingScreenUiState,
     setShowDialog: (Boolean) -> Unit,
@@ -55,7 +56,6 @@ fun InputDialogWidget(
         mutableStateOf("")
     }
 
-    val mText = stringResource(title)
     if (showDialog) {
         Dialog(
             onDismissRequest = { setShowDialog(false) },
@@ -88,7 +88,7 @@ fun InputDialogWidget(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(
-                                    text = mText,
+                                    text = title,
                                     fontSize = MaterialTheme.typography.bodyMedium.fontSize,
                                     color = Color.Black
                                 )
@@ -161,7 +161,7 @@ fun InputDialogWidget(
 fun InputDialogPreview() {
     InputDialogWidget(
         showDialog = true,
-        title = R.string.title,
+        title = "R.string.title",
         0,
         state = SettingScreenUiState(),
         setShowDialog = {},
