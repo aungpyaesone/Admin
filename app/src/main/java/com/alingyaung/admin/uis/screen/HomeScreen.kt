@@ -65,7 +65,7 @@ fun HomeScreen(navController: NavHostController = rememberNavController()) {
         topBar = {
             Log.d("routell",currentRoute.toString())
             when(currentRoute){
-                DetailScreen.BookDetail.getBookId() -> {} /*TopAppBar(
+                DetailScreen.BookDetail.route -> {} /*TopAppBar(
                     title = {
 
                     },

@@ -114,6 +114,8 @@ class MainRepository @Inject constructor(
         )
     }
 
+    suspend fun getBookById(bookId:String) : Book = bookDao.getBookById(bookId)
+
     suspend fun getAllAuthors(): Flow<Resource<List<Author>>> {
         return networkBoundResource(
             query = { authorDao.getAllAuthor() },

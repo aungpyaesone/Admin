@@ -59,4 +59,4 @@ fun Long?.validate() = when{
     }
 }
 
-fun Double?.format(): String = DecimalFormat("#,### ကျပ်").format(this)
+fun Double?.format(): String = this?.let { DecimalFormat("#,### ကျပ်").format(this)} ?: "0.0"

@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
@@ -31,12 +32,23 @@ import coil.compose.AsyncImage
 import coil.imageLoader
 import com.alingyaung.admin.R
 import com.alingyaung.admin.data.persistence.entity.Book
+import com.alingyaung.admin.presentation.event.BookDetailEvent
+import com.alingyaung.admin.presentation.state.BookDetailUIState
+import com.alingyaung.admin.utils.extension.format
 import com.alingyaung.admin.utils.extension.getImageRequest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BookDetailScreen(navController: NavController,bookId:String) {
+fun BookDetailScreen(
+    navController: NavController,
+    bookId: String,
+    state: BookDetailUIState,
+    onEvent: (BookDetailEvent) -> Unit
+) {
     val scrollBehavior2 = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    LaunchedEffect(null) {
+        onEvent(BookDetailEvent.GetBookByIdEvent(bookId))
+    }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -48,8 +60,7 @@ fun BookDetailScreen(navController: NavController,bookId:String) {
                             .background(MaterialTheme.colorScheme.onTertiary)
                             .clickable {
                                 navController.popBackStack()
-                            }
-                        ,
+                            },
                         shape = RoundedCornerShape(dimensionResource(id = R.dimen.medium_dimen)),
                     ) {
                         Icon(
@@ -72,58 +83,67 @@ fun BookDetailScreen(navController: NavController,bookId:String) {
                         )
                     }
                 },
-                scrollBehavior = scrollBehavior2)
+                scrollBehavior = scrollBehavior2
+            )
         }
-    ){
-        Surface(modifier = Modifier.padding(it)){
+    ) {
+        Surface(modifier = Modifier.padding(it)) {
             val context = LocalContext.current
-            Log.d("bookId",bookId.toString())
+            Log.d("bookId", bookId.toString())
+
             Box(
                 modifier = Modifier.fillMaxWidth()
                     .padding(dimensionResource(R.dimen.medium_dimen)),
                 contentAlignment = Alignment.TopStart
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.Top
-                ) {
-                    /* AsyncImage(
-                         modifier = Modifier.width(dimensionResource(R.dimen.dimen_120))
-                             .height(dimensionResource(R.dimen.dimen_150)),
-                         model = getImageRequest(context,book.image),
-                         contentDescription = null,
-                         imageLoader = context.imageLoader
-                     )*/
-                    Image(
-                        painter = painterResource(R.drawable.test),
-                        modifier = Modifier.width(dimensionResource(R.dimen.dimen_120))
-                            .height(dimensionResource(R.dimen.dimen_150)),
-                        contentDescription = null
-                    )
+                Column {
 
-                    Column(modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.Top,
-                        horizontalAlignment = Alignment.Start){
-                        Text(
-                            text = "ABCDEFG",
-                            modifier = Modifier.fillMaxWidth(),
-                            fontSize = MaterialTheme.typography.bodySmall.fontSize,
-                            fontWeight = FontWeight.Black
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.Top
+                    ) {
+//                    AsyncImage(
+//                        modifier = Modifier.width(dimensionResource(R.dimen.dimen_120))
+//                            .height(dimensionResource(R.dimen.dimen_150)),
+//                        model = getImageRequest(context, state.book?.image),
+//                        contentDescription = null,
+//                        imageLoader = context.imageLoader
+//                    )
+                        Image(
+                            painter = painterResource(R.drawable.test),
+                            modifier = Modifier.width(dimensionResource(R.dimen.dimen_120))
+                                .height(dimensionResource(R.dimen.dimen_150)),
+                            contentDescription = null
                         )
-                        Text(
-                            text = "HIJKLMN",
-                            modifier = Modifier.fillMaxWidth(),
-                            fontSize = MaterialTheme.typography.bodySmall.fontSize,
-                            fontWeight = FontWeight.Black
-                        )
-                        Text(
-                            text = "OPQRSTU",
-                            modifier = Modifier.fillMaxWidth(),
-                            fontSize = MaterialTheme.typography.bodySmall.fontSize,
-                            fontWeight = FontWeight.Black
-                        )
+                        Column(
+                            modifier = Modifier.fillMaxWidth()
+                                .padding(start = dimensionResource(R.dimen.small_dimen)),
+                            verticalArrangement = Arrangement.Top,
+                            horizontalAlignment = Alignment.Start
+                        ) {
+                            Text(
+                                text = state.book?.name ?: "",
+                                modifier = Modifier.fillMaxWidth(),
+                                fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                                fontWeight = FontWeight.Black
+                            )
+                            Log.d("price", state.book?.price.toString())
+                            Text(
+                                text = state.book?.price.format(),
+                                modifier = Modifier.fillMaxWidth(),
+                                fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                                fontWeight = FontWeight.Black
+                            )
+                            Text(
+                                text = "OPQRSTU",
+                                modifier = Modifier.fillMaxWidth(),
+                                fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                                fontWeight = FontWeight.Black
+                            )
+                        }
                     }
+
                     Spacer(modifier = Modifier.height(dimensionResource(R.dimen.medium_dimen)))
                     Text(
                         text = stringResource(R.string.introduction),
@@ -137,12 +157,14 @@ fun BookDetailScreen(navController: NavController,bookId:String) {
                     Text(
                         text = buildAnnotatedString {
                             append(contentText)
-                            addStyle(style = ParagraphStyle(textAlign = TextAlign.Justify)
-                                ,0,contentText.length)
+                            addStyle(
+                                style = ParagraphStyle(textAlign = TextAlign.Justify), 0, contentText.length
+                            )
                         },
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Justify,
                     )
+
                 }
             }
         }
@@ -154,6 +176,8 @@ fun BookDetailScreen(navController: NavController,bookId:String) {
 @Composable
 fun BookScreenPreview() {
     Surface {
-        BookDetailScreen(rememberNavController(),"")
+        BookDetailScreen(rememberNavController(), "",
+            state = BookDetailUIState(),
+            onEvent = {})
     }
 }

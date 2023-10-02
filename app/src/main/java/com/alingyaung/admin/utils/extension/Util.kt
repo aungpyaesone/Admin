@@ -6,7 +6,7 @@ import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 import com.alingyaung.admin.R
 
-fun getImageRequest(context:Context,url:String):ImageRequest{
+fun getImageRequest(context:Context,url:String?):ImageRequest{
     return ImageRequest.Builder(context)
         .data(url)
         .memoryCacheKey(url)
