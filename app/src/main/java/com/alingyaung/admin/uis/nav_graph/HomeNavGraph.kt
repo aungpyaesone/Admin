@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -31,6 +32,7 @@ import com.alingyaung.admin.uis.viewmodel.SettingViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeNavGraph(navHostController: NavHostController,title:(String)->Unit) {
+    var bookId = remember { mutableStateOf("") }
     NavHost(
         navController = navHostController,
         startDestination = "Home",
@@ -44,6 +46,7 @@ fun HomeNavGraph(navHostController: NavHostController,title:(String)->Unit) {
                 onEvent = viewModel::onEvent,
                 isLoading = viewModel.isLoading.value,
                 onItemClick = {
+                    bookId.value = it.id
                     navHostController.navigate(
                         route = Graph.DETAILS
                     )
@@ -73,7 +76,7 @@ fun HomeNavGraph(navHostController: NavHostController,title:(String)->Unit) {
                isLoading = viewModel.isLoading.value,
                onEvent = viewModel::onEvent)
         }
-        navDetailGraph(navHostController,title = title)
+        navDetailGraph(navHostController,title = title, bookId = bookId.value)
     }
 
 }

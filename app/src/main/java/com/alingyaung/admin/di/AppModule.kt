@@ -100,7 +100,7 @@ object AppModule {
         ),
         NavAddScreen(
             route = "AddPublisher",
-            title = R.string.publisher,
+            title = R.string.add_publisher,
             selectedIcon = Icons.Default.Business,
             hasNews = false,
             badgeCount = null,
