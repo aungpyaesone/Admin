@@ -223,6 +223,10 @@ class MainRepository @Inject constructor(
         }
     }
 
+    suspend fun updateBook(book: Book){
+        bookDao.insertBook(book)
+    }
+
     private suspend fun syncAllAuthor(){
         val unSyncAuthors = authorDao.getAllUnSyncAuthor()
         unSyncAuthors.forEach { author -> insertAuthor(author) }

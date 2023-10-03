@@ -8,10 +8,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
@@ -41,11 +45,14 @@ import com.alingyaung.admin.utils.extension.getImageRequest
 @Composable
 fun BookDetailScreen(
     navController: NavController,
-    bookId: String,
+    bookId:String,
+    isFav : Boolean,
     state: BookDetailUIState,
     onEvent: (BookDetailEvent) -> Unit
 ) {
     val scrollBehavior2 = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val isFavourite = remember { mutableStateOf(isFav) }
+    Log.d("fav",isFav.toString())
     LaunchedEffect(null) {
         onEvent(BookDetailEvent.GetBookByIdEvent(bookId))
     }
@@ -76,9 +83,12 @@ fun BookDetailScreen(
 
                 },
                 actions = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = {
+                      //  isFavourite.value = !isFav
+                       // onEvent(BookDetailEvent.OnUpdateFavouriteEvent(bookId,isFavourite = isFavourite.value))
+                    }) {
                         Icon(
-                            imageVector = Icons.Default.FavoriteBorder,
+                            imageVector = if(isFavourite.value)Icons.Default.FavoriteBorder else Icons.Default.Favorite,
                             contentDescription = "Mark as favorite"
                         )
                     }
@@ -89,7 +99,6 @@ fun BookDetailScreen(
     ) {
         Surface(modifier = Modifier.padding(it)) {
             val context = LocalContext.current
-            Log.d("bookId", bookId.toString())
 
             Box(
                 modifier = Modifier.fillMaxWidth()
@@ -176,8 +185,8 @@ fun BookDetailScreen(
 @Composable
 fun BookScreenPreview() {
     Surface {
-        BookDetailScreen(rememberNavController(), "",
+       /* BookDetailScreen(rememberNavController(), Book(),
             state = BookDetailUIState(),
-            onEvent = {})
+            onEvent = {})*/
     }
 }

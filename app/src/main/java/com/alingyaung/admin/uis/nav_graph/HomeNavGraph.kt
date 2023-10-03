@@ -33,6 +33,7 @@ import com.alingyaung.admin.uis.viewmodel.SettingViewModel
 @Composable
 fun HomeNavGraph(navHostController: NavHostController,title:(String)->Unit) {
     var bookId = remember { mutableStateOf("") }
+    var fav = remember { mutableStateOf(false) }
     NavHost(
         navController = navHostController,
         startDestination = "Home",
@@ -47,6 +48,7 @@ fun HomeNavGraph(navHostController: NavHostController,title:(String)->Unit) {
                 isLoading = viewModel.isLoading.value,
                 onItemClick = {
                     bookId.value = it.id
+                    fav.value = it.isFavourite
                     navHostController.navigate(
                         route = Graph.DETAILS
                     )
@@ -76,7 +78,7 @@ fun HomeNavGraph(navHostController: NavHostController,title:(String)->Unit) {
                isLoading = viewModel.isLoading.value,
                onEvent = viewModel::onEvent)
         }
-        navDetailGraph(navHostController,title = title, bookId = bookId.value)
+        navDetailGraph(navHostController,title = title, bookId = bookId.value, isFav = fav.value)
     }
 
 }
