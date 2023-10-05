@@ -53,22 +53,22 @@ class NetworkModelImpl @Inject constructor(
                             }
                             .addOnFailureListener { e ->
                                 Log.d("onFailure", "Failed to add Author")
-                                continuation.resume(
+                                continuation.safeResume(
                                     Resource(Status.ERROR, null, e.localizedMessage)
-                                )
+                                ){}
                             }
                     }
                 } catch (e: Exception) {
                     Log.e("Error", "Firestore operation failed due to: $e")
-                    continuation.resume(
+                    continuation.safeResume(
                         Resource(Status.ERROR, null, "Failed to perform Firestore operation")
-                    )
+                    ){}
                 }
             } else {
                 // No internet connection, return error immediately
-                continuation.resume(
+                continuation.safeResume(
                     Resource(Status.ERROR, null, "No internet connection")
-                )
+                ){}
             }
         }
     }
@@ -113,7 +113,7 @@ class NetworkModelImpl @Inject constructor(
                             val dataList = Gson().fromJson(gson, Category::class.java)
                             categoryList.add(dataList)
                         }
-                        continuation.resume(categoryList)
+                        continuation.safeResume(categoryList){}
                     }
                 }
         }
@@ -138,7 +138,9 @@ class NetworkModelImpl @Inject constructor(
             }.addOnCompleteListener { task ->
                 val imageUrl = task.result?.toString()
                 imageUrl?.let {
-                    continuation.resume(it)
+                    continuation.safeResume(it){
+
+                    }
                 }
             }
         }
@@ -168,18 +170,18 @@ class NetworkModelImpl @Inject constructor(
                             .document(it.id)
                             .set(bookMap)
                             .addOnSuccessListener {
-                                continuation.resume(Resource(Status.SUCCESS, "success", null))
+                                continuation.safeResume(Resource(Status.SUCCESS, "success", null)){}
                             }
                             .addOnFailureListener {
-                                continuation.resume(Resource(Status.ERROR, null, it.localizedMessage))
+                                continuation.safeResume(Resource(Status.ERROR, null, it.localizedMessage)){}
                             }
                     }
                 } catch (e:Exception){
-                    continuation.resume(Resource(Status.ERROR, null, e.localizedMessage))
+                    continuation.safeResume(Resource(Status.ERROR, null, e.localizedMessage)){}
                 }
 
         } else{
-                continuation.resume(Resource(Status.ERROR, null, "No internet connection"))
+                continuation.safeResume(Resource(Status.ERROR, null, "No internet connection")){}
             }
     }
     }
@@ -254,20 +256,20 @@ class NetworkModelImpl @Inject constructor(
                             }
                     }
                 }catch (e:Exception){
-                    continuation.resume(
+                    continuation.safeResume(
                         Resource(Status.ERROR, null, e.localizedMessage)
-                    )
+                    ){}
                 }
             } else {
-                continuation.resume(
+                continuation.safeResume(
                     Resource(Status.ERROR, null, "No internet connection")
-                )
+                ){}
             }
         }
     }
 
     override suspend fun addPublisher(publisher: Publisher?): Resource<String> {
-        return suspendCoroutine { continuation ->
+        return suspendCancellableCoroutine { continuation ->
             if(checkForInternetConnection(context)) {
                 val bookMap = hashMapOf(
                     "id" to publisher?.id,
@@ -290,15 +292,15 @@ class NetworkModelImpl @Inject constructor(
                         }
                 }
             }else{
-                continuation.resume(
+                continuation.safeResume(
                     Resource(Status.ERROR, null, "No internet connection")
-                )
+                ){}
             }
         }
     }
 
     override suspend fun getAllGenres(): List<Genre> {
-        return suspendCoroutine { continuation ->
+        return suspendCancellableCoroutine { continuation ->
             db.collection("genres")
                 .addSnapshotListener { value, error ->
                     error?.let {
@@ -313,7 +315,7 @@ class NetworkModelImpl @Inject constructor(
                             val dataList = Gson().fromJson(gson, Genre::class.java)
                             genreList.add(dataList)
                         }
-                        continuation.resume(genreList)
+                        continuation.safeResume(genreList){}
                     }
                 }
         }
@@ -335,7 +337,7 @@ class NetworkModelImpl @Inject constructor(
                             val dataList = Gson().fromJson(gson, Publisher::class.java)
                             publisherList.add(dataList)
                         }
-                        continuation.resume(publisherList)
+                        continuation.safeResume(publisherList){}
 
                     }
                 }
