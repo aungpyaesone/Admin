@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
@@ -41,6 +42,9 @@ fun HomeNavGraph(navHostController: NavHostController,title:(String)->Unit) {
     ) {
         composable(route = "Home") {
             val viewModel = hiltViewModel<BookScreenViewModel>()
+            val searchWidgetState by viewModel.searchWidgetState
+            val searchTextState by viewModel.searchTextState
+
             BookListScreen(
                 navHostController = navHostController,
                 state = viewModel.state.value,
@@ -52,7 +56,9 @@ fun HomeNavGraph(navHostController: NavHostController,title:(String)->Unit) {
                     navHostController.navigate(
                         route = Graph.DETAILS
                     )
-                }
+                },
+                searchWidgetState = searchWidgetState,
+                searchTextState = searchTextState
             )
         }
 

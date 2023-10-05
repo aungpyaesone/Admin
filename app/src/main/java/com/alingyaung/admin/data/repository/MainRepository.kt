@@ -224,7 +224,7 @@ class MainRepository @Inject constructor(
     }
 
     suspend fun updateBook(book: Book){
-        bookDao.insertBook(book)
+       // addBook(book)
     }
 
     private suspend fun syncAllAuthor(){

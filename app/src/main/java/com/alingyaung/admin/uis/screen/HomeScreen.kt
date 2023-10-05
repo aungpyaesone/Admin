@@ -14,11 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBackIos
-import androidx.compose.material.icons.filled.Book
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -64,44 +60,8 @@ fun HomeScreen(navController: NavHostController = rememberNavController()) {
     Scaffold(
         topBar = {
             Log.d("routell",currentRoute.toString())
-            when(currentRoute){
-                DetailScreen.BookDetail.route -> {} /*TopAppBar(
-                    title = {
-
-                    },
-                    navigationIcon = {
-                        Card(
-                            modifier = Modifier
-                                .padding(dimensionResource(id = R.dimen.medium_dimen))
-                                .background(MaterialTheme.colorScheme.onTertiary)
-                                .clickable {
-                                    navController.popBackStack()
-                                }
-                            ,
-                            shape = RoundedCornerShape(dimensionResource(id = R.dimen.medium_dimen)),
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.ArrowBack,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onTertiary,
-                                modifier = Modifier
-                                    .padding(
-                                        dimensionResource(id = R.dimen.small_dimen)
-                                    )
-                                    )
-                        }
-
-                    },
-                    actions = {
-                        IconButton(onClick = { *//*TODO*//* }) {
-                            Icon(
-                                imageVector = Icons.Default.FavoriteBorder,
-                                contentDescription = "Mark as favorite"
-                            )
-                        }
-                    },
-                    scrollBehavior = scrollBehavior2
-                )*/
+            when(currentRoute) {
+                DetailScreen.BookDetail.route, "Home" -> {}
                 else -> {
                     TopAppBar(
                         title = { Text(text = title.value) },
@@ -122,6 +82,29 @@ fun HomeScreen(navController: NavHostController = rememberNavController()) {
         }
 
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DefaultAppBar(onSearchClicked: () -> Unit) {
+    TopAppBar(
+        title = {
+            Text(
+                text = "Home"
+            )
+        },
+        actions = {
+            IconButton(
+                onClick = { onSearchClicked() }
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Search,
+                    contentDescription = "Search Icon",
+                    tint = Color.Black
+                )
+            }
+        }
+    )
 }
 
 @Composable

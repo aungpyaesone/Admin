@@ -45,14 +45,14 @@ import com.alingyaung.admin.utils.extension.getImageRequest
 @Composable
 fun BookDetailScreen(
     navController: NavController,
-    bookId:String,
-    isFav : Boolean,
+    bookId: String,
+    isFav: Boolean,
     state: BookDetailUIState,
     onEvent: (BookDetailEvent) -> Unit
 ) {
     val scrollBehavior2 = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val isFavourite = remember { mutableStateOf(isFav) }
-    Log.d("fav",isFav.toString())
+    Log.d("fav", isFav.toString())
     LaunchedEffect(null) {
         onEvent(BookDetailEvent.GetBookByIdEvent(bookId))
     }
@@ -73,7 +73,6 @@ fun BookDetailScreen(
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onTertiary,
                             modifier = Modifier
                                 .padding(
                                     dimensionResource(id = R.dimen.small_dimen)
@@ -84,11 +83,11 @@ fun BookDetailScreen(
                 },
                 actions = {
                     IconButton(onClick = {
-                      //  isFavourite.value = !isFav
-                       // onEvent(BookDetailEvent.OnUpdateFavouriteEvent(bookId,isFavourite = isFavourite.value))
+                        isFavourite.value = !isFav
+                        onEvent(BookDetailEvent.OnUpdateFavouriteEvent(bookId, isFavourite = isFavourite.value))
                     }) {
                         Icon(
-                            imageVector = if(isFavourite.value)Icons.Default.FavoriteBorder else Icons.Default.Favorite,
+                            imageVector = if (isFavourite.value) Icons.Default.FavoriteBorder else Icons.Default.Favorite,
                             contentDescription = "Mark as favorite"
                         )
                     }
@@ -112,19 +111,19 @@ fun BookDetailScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.Top
                     ) {
-//                    AsyncImage(
-//                        modifier = Modifier.width(dimensionResource(R.dimen.dimen_120))
-//                            .height(dimensionResource(R.dimen.dimen_150)),
-//                        model = getImageRequest(context, state.book?.image),
-//                        contentDescription = null,
-//                        imageLoader = context.imageLoader
-//                    )
-                        Image(
-                            painter = painterResource(R.drawable.test),
+                        AsyncImage(
                             modifier = Modifier.width(dimensionResource(R.dimen.dimen_120))
                                 .height(dimensionResource(R.dimen.dimen_150)),
-                            contentDescription = null
+                            model = getImageRequest(context, state.book?.image),
+                            contentDescription = null,
+                            imageLoader = context.imageLoader
                         )
+                        /*     Image(
+                                 painter = painterResource(R.drawable.test),
+                                 modifier = Modifier.width(dimensionResource(R.dimen.dimen_120))
+                                     .height(dimensionResource(R.dimen.dimen_150)),
+                                 contentDescription = null
+                             )*/
                         Column(
                             modifier = Modifier.fillMaxWidth()
                                 .padding(start = dimensionResource(R.dimen.small_dimen)),
@@ -134,14 +133,14 @@ fun BookDetailScreen(
                             Text(
                                 text = state.book?.name ?: "",
                                 modifier = Modifier.fillMaxWidth(),
-                                fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                                fontSize = MaterialTheme.typography.bodyLarge.fontSize,
                                 fontWeight = FontWeight.Black
                             )
                             Log.d("price", state.book?.price.toString())
                             Text(
                                 text = state.book?.price.format(),
                                 modifier = Modifier.fillMaxWidth(),
-                                fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                                fontSize = MaterialTheme.typography.bodyMedium.fontSize,
                                 fontWeight = FontWeight.Black
                             )
                             Text(
@@ -157,7 +156,7 @@ fun BookDetailScreen(
                     Text(
                         text = stringResource(R.string.introduction),
                         modifier = Modifier.fillMaxWidth(),
-                        fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                        fontSize = MaterialTheme.typography.bodyMedium.fontSize,
                         fontWeight = FontWeight.Black
                     )
 
@@ -185,8 +184,8 @@ fun BookDetailScreen(
 @Composable
 fun BookScreenPreview() {
     Surface {
-       /* BookDetailScreen(rememberNavController(), Book(),
-            state = BookDetailUIState(),
-            onEvent = {})*/
+        /* BookDetailScreen(rememberNavController(), Book(),
+             state = BookDetailUIState(),
+             onEvent = {})*/
     }
 }
