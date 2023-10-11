@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -96,86 +97,91 @@ fun BookDetailScreen(
             )
         }
     ) {
-        Surface(modifier = Modifier.padding(it)) {
-            val context = LocalContext.current
+        LazyColumn {
+            item {
+                Surface(modifier = Modifier.padding(it)) {
+                    val context = LocalContext.current
 
-            Box(
-                modifier = Modifier.fillMaxWidth()
-                    .padding(dimensionResource(R.dimen.medium_dimen)),
-                contentAlignment = Alignment.TopStart
-            ) {
-                Column {
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.Top
+                    Box(
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(dimensionResource(R.dimen.medium_dimen)),
+                        contentAlignment = Alignment.TopStart
                     ) {
-                        AsyncImage(
-                            modifier = Modifier.width(dimensionResource(R.dimen.dimen_120))
-                                .height(dimensionResource(R.dimen.dimen_150)),
-                            model = getImageRequest(context, state.book?.image),
-                            contentDescription = null,
-                            imageLoader = context.imageLoader
-                        )
-                        /*     Image(
-                                 painter = painterResource(R.drawable.test),
-                                 modifier = Modifier.width(dimensionResource(R.dimen.dimen_120))
-                                     .height(dimensionResource(R.dimen.dimen_150)),
-                                 contentDescription = null
-                             )*/
-                        Column(
-                            modifier = Modifier.fillMaxWidth()
-                                .padding(start = dimensionResource(R.dimen.small_dimen)),
-                            verticalArrangement = Arrangement.Top,
-                            horizontalAlignment = Alignment.Start
-                        ) {
+                        Column {
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.Top
+                            ) {
+                                AsyncImage(
+                                    modifier = Modifier.width(dimensionResource(R.dimen.dimen_120))
+                                        .height(dimensionResource(R.dimen.dimen_150)),
+                                    model = getImageRequest(context, state.book?.image),
+                                    contentDescription = null,
+                                    imageLoader = context.imageLoader
+                                )
+                                /*     Image(
+                                         painter = painterResource(R.drawable.test),
+                                         modifier = Modifier.width(dimensionResource(R.dimen.dimen_120))
+                                             .height(dimensionResource(R.dimen.dimen_150)),
+                                         contentDescription = null
+                                     )*/
+                                Column(
+                                    modifier = Modifier.fillMaxWidth()
+                                        .padding(start = dimensionResource(R.dimen.small_dimen)),
+                                    verticalArrangement = Arrangement.Top,
+                                    horizontalAlignment = Alignment.Start
+                                ) {
+                                    Text(
+                                        text = state.book?.name ?: "",
+                                        modifier = Modifier.fillMaxWidth(),
+                                        fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                                        fontWeight = FontWeight.Black
+                                    )
+
+                                    Text(
+                                        text = state.book?.price.format(),
+                                        modifier = Modifier.fillMaxWidth(),
+                                        fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                                        fontWeight = FontWeight.Black
+                                    )
+                                    Text(
+                                        text = "OPQRSTU",
+                                        modifier = Modifier.fillMaxWidth(),
+                                        fontSize = MaterialTheme.typography.bodySmall.fontSize,
+                                        fontWeight = FontWeight.Black
+                                    )
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.medium_dimen)))
                             Text(
                                 text = state.book?.name ?: "",
-                                modifier = Modifier.fillMaxWidth(),
-                                fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-                                fontWeight = FontWeight.Black
-                            )
-                            Log.d("price", state.book?.price.toString())
-                            Text(
-                                text = state.book?.price.format(),
                                 modifier = Modifier.fillMaxWidth(),
                                 fontSize = MaterialTheme.typography.bodyMedium.fontSize,
                                 fontWeight = FontWeight.Black
                             )
+
+                            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.medium_dimen)))
+                            val contentText = state.book?.description ?: ""
                             Text(
-                                text = "OPQRSTU",
+                                text = buildAnnotatedString {
+                                    append(contentText)
+                                    addStyle(
+                                        style = ParagraphStyle(textAlign = TextAlign.Justify), 0, contentText.length
+                                    )
+                                },
                                 modifier = Modifier.fillMaxWidth(),
-                                fontSize = MaterialTheme.typography.bodySmall.fontSize,
-                                fontWeight = FontWeight.Black
+                                textAlign = TextAlign.Justify,
                             )
+
                         }
                     }
-
-                    Spacer(modifier = Modifier.height(dimensionResource(R.dimen.medium_dimen)))
-                    Text(
-                        text = stringResource(R.string.introduction),
-                        modifier = Modifier.fillMaxWidth(),
-                        fontSize = MaterialTheme.typography.bodyMedium.fontSize,
-                        fontWeight = FontWeight.Black
-                    )
-
-                    Spacer(modifier = Modifier.height(dimensionResource(R.dimen.medium_dimen)))
-                    val contentText = stringResource(R.string.content)
-                    Text(
-                        text = buildAnnotatedString {
-                            append(contentText)
-                            addStyle(
-                                style = ParagraphStyle(textAlign = TextAlign.Justify), 0, contentText.length
-                            )
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Justify,
-                    )
-
                 }
             }
         }
+
     }
 
 }

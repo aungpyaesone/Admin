@@ -86,7 +86,7 @@ fun BookListScreen(
                         }
                     } else {
                         LazyVerticalGrid(
-                            modifier = Modifier.fillMaxSize(),
+                            modifier = Modifier.fillMaxWidth(),
                             verticalArrangement = Arrangement.SpaceBetween,
                             horizontalArrangement = Arrangement.SpaceBetween,
                             columns = GridCells.Fixed(3),
