@@ -6,10 +6,7 @@ import android.telecom.Call.Details
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
@@ -43,13 +40,15 @@ fun HomeNavGraph(navHostController: NavHostController,title:(String)->Unit) {
         composable(route = "Home") {
             val viewModel = hiltViewModel<BookScreenViewModel>()
             val searchWidgetState by viewModel.searchWidgetState
-            val searchTextState by viewModel.searchTextState
+            val searchTextState by viewModel.searchTextState.collectAsState()
+            val books by viewModel.books.collectAsState()
+            val isLoading by viewModel.isLoading.collectAsState()
 
             BookListScreen(
                 navHostController = navHostController,
-                state = viewModel.state.value,
+                state = books,
                 onEvent = viewModel::onEvent,
-                isLoading = viewModel.isLoading.value,
+                isLoading = isLoading,
                 onItemClick = {
                     bookId.value = it.id
                     fav.value = it.isFavourite

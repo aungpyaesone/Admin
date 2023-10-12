@@ -34,7 +34,7 @@ import com.alingyaung.admin.uis.widget.SearchWidgetState
 @Composable
 fun BookListScreen(
     navHostController: NavHostController,
-    state: BookScreenState,
+    state: List<Book>,
     onEvent : (BookScreenEvent) -> Unit,
     onItemClick : (Book) -> Unit,
     isLoading: Boolean = false,
@@ -58,7 +58,7 @@ fun BookListScreen(
             },
             onSearchClicked = {
                 Log.d("Searched Text", it)
-               // onEvent(BookScreenEvent.BookFilterEvent(it))
+                onEvent(BookScreenEvent.BookFilterEvent(it))
             },
             onSearchTriggered = {
                 onEvent(BookScreenEvent.UpdatedWidgetState(SearchWidgetState.OPENED))
@@ -80,7 +80,7 @@ fun BookListScreen(
                 }
 
                 Box (modifier = Modifier.fillMaxSize()) {
-                    if (state.bookList.isEmpty()) {
+                    if (state.isEmpty()) {
                         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                             Text(text = stringResource(R.string.empty_book))
                         }
@@ -91,7 +91,7 @@ fun BookListScreen(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             columns = GridCells.Fixed(3),
                             content ={
-                                this.items(state.bookList,key = {
+                                this.items(state,key = {
                                     it.id
                                 }){data ->
                                     BookItemWidget(
