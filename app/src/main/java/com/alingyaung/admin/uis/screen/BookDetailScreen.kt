@@ -53,7 +53,6 @@ fun BookDetailScreen(
 ) {
     val scrollBehavior2 = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val isFavourite = remember { mutableStateOf(isFav) }
-    Log.d("fav", isFav.toString())
     LaunchedEffect(null) {
         onEvent(BookDetailEvent.GetBookByIdEvent(bookId))
     }
@@ -140,16 +139,12 @@ fun BookDetailScreen(
                                         fontWeight = FontWeight.Black
                                     )
 
+                                    Spacer(modifier = Modifier.height(dimensionResource(R.dimen.small_dimen)))
+
                                     Text(
                                         text = state.book?.price.format(),
                                         modifier = Modifier.fillMaxWidth(),
                                         fontSize = MaterialTheme.typography.bodyMedium.fontSize,
-                                        fontWeight = FontWeight.Black
-                                    )
-                                    Text(
-                                        text = "OPQRSTU",
-                                        modifier = Modifier.fillMaxWidth(),
-                                        fontSize = MaterialTheme.typography.bodySmall.fontSize,
                                         fontWeight = FontWeight.Black
                                     )
                                 }

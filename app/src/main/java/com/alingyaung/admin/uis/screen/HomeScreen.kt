@@ -40,6 +40,7 @@ import androidx.navigation.compose.rememberNavController
 import com.alingyaung.admin.R
 import com.alingyaung.admin.di.AppModule
 import com.alingyaung.admin.domain.NavigationItem
+import com.alingyaung.admin.ui.theme.fontFamily
 import com.alingyaung.admin.uis.nav_graph.DetailScreen
 import com.alingyaung.admin.uis.nav_graph.Graph
 import com.alingyaung.admin.uis.nav_graph.HomeNavGraph
@@ -53,18 +54,23 @@ fun HomeScreen(navController: NavHostController = rememberNavController()) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    Log.d("current route",currentRoute.toString())
+    Log.d("current route", currentRoute.toString())
     val title = remember {
         mutableStateOf("စာအုပ်များ")
     }
     Scaffold(
         topBar = {
-            Log.d("routell",currentRoute.toString())
-            when(currentRoute) {
+            Log.d("routell", currentRoute.toString())
+            when (currentRoute) {
                 DetailScreen.BookDetail.route, "Home" -> {}
                 else -> {
                     TopAppBar(
-                        title = { Text(text = title.value) },
+                        title = {
+                            Text(
+                                text = title.value,
+                                fontFamily = fontFamily
+                            )
+                        },
                         scrollBehavior = scrollBehavior,
                     )
                 }
@@ -74,11 +80,11 @@ fun HomeScreen(navController: NavHostController = rememberNavController()) {
         bottomBar = {
             BottomBar(navController = navController, title = {
                 title.value = it
-            },navBackStackEntry)
+            }, navBackStackEntry)
         }
     ) { paddingValues ->
         Surface(modifier = Modifier.padding(paddingValues)) {
-            HomeNavGraph(navHostController = navController,title = {title.value = it})
+            HomeNavGraph(navHostController = navController, title = { title.value = it })
         }
 
     }
@@ -108,9 +114,10 @@ fun DefaultAppBar(onSearchClicked: () -> Unit) {
 }
 
 @Composable
-fun BottomBar(navController: NavHostController,title: (String) -> Unit,
-              navBackStackEntry: NavBackStackEntry?
-              ) {
+fun BottomBar(
+    navController: NavHostController, title: (String) -> Unit,
+    navBackStackEntry: NavBackStackEntry?
+) {
     val screens = AppModule.navigationItems()
     //val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -126,7 +133,8 @@ fun BottomBar(navController: NavHostController,title: (String) -> Unit,
                     screen = sc,
                     currentDestination = currentDestination,
                     navController = navController,
-                    title = title)
+                    title = title
+                )
             }
         }
     }
@@ -167,8 +175,9 @@ fun RowScope.AddItem(
 }
 
 @Composable
-fun ActionWidget(){
-    IconButton(onClick = { /*TODO*/ },
+fun ActionWidget() {
+    IconButton(
+        onClick = { /*TODO*/ },
         modifier = Modifier.clip(CircleShape),
     ) {
         Icon(
@@ -180,6 +189,6 @@ fun ActionWidget(){
 
 @Preview
 @Composable
-fun previewActionWidget(){
+fun previewActionWidget() {
     ActionWidget()
 }

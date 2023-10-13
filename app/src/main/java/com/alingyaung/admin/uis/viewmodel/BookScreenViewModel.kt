@@ -3,6 +3,7 @@ package com.alingyaung.admin.uis.viewmodel
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.alingyaung.admin.presentation.event.BookScreenEvent
 import com.alingyaung.admin.presentation.state.BookScreenState
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BookScreenViewModel @Inject constructor(
-    private val repository: MainRepository
+    private val repository: MainRepository,
+    private val savedStateHandle: SavedStateHandle
 ): BaseViewModel(){
 
     private val _state = mutableStateOf(BookScreenState())

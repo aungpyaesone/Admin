@@ -96,10 +96,6 @@ fun BookListScreen(
                                 }){data ->
                                     BookItemWidget(
                                         book = data,
-                                        onEvent = {},
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(8.dp),
                                         onItemClick = {
                                             onItemClick(data)
                                         }
@@ -111,10 +107,7 @@ fun BookListScreen(
             }
 
         }
-
     }
-
-
 }
 
 @Composable

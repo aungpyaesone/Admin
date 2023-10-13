@@ -1,5 +1,6 @@
 package com.alingyaung.admin.uis.widget
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardActions
@@ -24,7 +25,6 @@ fun SearchAppBar(
     onCloseClick: () -> Unit,
     onSearchClicked: (String) -> Unit
 ) {
-
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -60,7 +60,7 @@ fun SearchAppBar(
                     Icon(
                         imageVector = Icons.Default.Search,
                         contentDescription = "Search Icon",
-                        tint = Color.White
+                        tint = MaterialTheme.colorScheme.surfaceTint
                     )
                 }
             },
@@ -77,7 +77,7 @@ fun SearchAppBar(
                     Icon(
                         imageVector = Icons.Default.Close,
                         contentDescription = "Close Icon",
-                        tint = Color.White
+                        tint =  MaterialTheme.colorScheme.surfaceTint
                     )
                 }
             },

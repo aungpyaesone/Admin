@@ -12,6 +12,7 @@ fun getImageRequest(context:Context,url:String?):ImageRequest{
         .memoryCacheKey(url)
         .diskCacheKey(url)
         .placeholder(R.drawable.ic_launcher_foreground)
+        .crossfade(2000)
         .error(R.drawable.ic_launcher_foreground)
         .fallback(R.drawable.ic_launcher_foreground)
         .diskCachePolicy(CachePolicy.ENABLED)

@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -12,9 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,8 +40,6 @@ import com.alingyaung.admin.utils.extension.getImageRequest
 @Composable
 fun BookItemWidget(
     book:Book,
-    onEvent:(BookScreenEvent)->Unit,
-    modifier: Modifier= Modifier,
     onItemClick : () -> Unit
 ){
     val context = LocalContext.current
@@ -62,20 +63,19 @@ fun BookItemWidget(
             Text(
                 text = book.price.format(),
                 style = TextStyle(
-                    fontSize = 10.sp,
-                    lineHeight = 20.sp,
-                    fontWeight = FontWeight(300),
+                    fontSize = MaterialTheme.typography.bodyMedium.fontSize,
                     letterSpacing = 0.1.sp,
                 )
             )
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.small_dimen)))
             Text(
                 text = book.name,
                 style = TextStyle(
-                    fontSize = 10.sp,
-                    lineHeight = 20.sp,
-                    fontWeight = FontWeight(400),
+                    fontSize = MaterialTheme.typography.bodyMedium.fontSize,
                     letterSpacing = 0.1.sp,
-                )
+                ),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         }
 
@@ -93,7 +93,6 @@ fun BookItemPreview(){
             0L,0L,"",
             ""
         ),
-        onEvent = {},
         onItemClick = {}
     )
 }
